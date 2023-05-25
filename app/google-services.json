@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "394448484975",
+    "firebase_url": "https://api-test-ad5f9-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "api-test-ad5f9",
+    "storage_bucket": "api-test-ad5f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394448484975:android:e3978ace5cba5fb21deb9a",
+        "android_client_info": {
+          "package_name": "com.capstone.turu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394448484975-4cdujuf14e7v8lp33c0esq71ds01q2je.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-Ia6Qr5cNh6lwTh2RnCZZw_1y1aDlVcc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394448484975-4cdujuf14e7v8lp33c0esq71ds01q2je.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394448484975:android:bc26d0874cef6e831deb9a",
+        "android_client_info": {
+          "package_name": "com.capstone.turuappmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394448484975-l3u59paue7tcjjsjc8v1n3u0h3cdttbo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.turuappmobile",
+            "certificate_hash": "2827a2e17865825b93ba5ecfbc635028a8508043"
+          }
+        },
+        {
+          "client_id": "394448484975-4cdujuf14e7v8lp33c0esq71ds01q2je.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-Ia6Qr5cNh6lwTh2RnCZZw_1y1aDlVcc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394448484975-4cdujuf14e7v8lp33c0esq71ds01q2je.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
