@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/home_icon"
+        android:title="@string/home"/>
+    <item
+        android:id="@+id/historyParentFragment"
+        android:icon="@drawable/sleep_history"
+        android:title="@string/history"/>
+
+    <item
+        android:id="@+id/fab"
+        android:enabled="false"
+        android:title=""/>
+
+    <item
+        android:id="@+id/challengeFragment"
+        android:icon="@drawable/challenge_icon"
+        android:title="@string/challenge"/>
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/profile_icon"
+        android:title="@string/profile_icon"/>
+</menu>

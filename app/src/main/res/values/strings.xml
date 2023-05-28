@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">TuruAppMobile</string>
+    <string name="app_name">Turu</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password_minimum_character">Mininal 8 Karakter</string>
+    <string name="dont_have_account">Dont Have Account Yet? Register</string>
+    <string name="have_an_account">Have An Account? Login</string>
+
+    <string name="default_greeting_message">Click on the button below to subscribe to Sleep API events!</string>
+    <string name="sleep_button_subscribe_text">Subscribe to Sleep Data</string>
+    <string name="sleep_button_unsubscribe_text">Unsubscribe to Sleep Data</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="permission_rational">Sample requires Activity Recognition permissions to function.</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="permission_approved">Permission Approved!</string>
+
+    <string name="start_time">Start Time : %1$s</string>
+    <string name="end_time">Start Time : %1$s</string>
+
+    <!-- Strings combined for output to main Text in MainActivity. -->
+    <string name="main_output_header1_subscribed_sleep_data">Currently subscribed to sleep data:\nSleepClassifyEvents should occur regularly.\n(Last update: %1$s):\n\n</string>
+    <string name="main_output_header1_unsubscribed_sleep_data">Currently NOT subscribed to sleep data:\n(Information below was saved from previous sessions to the database):\n\n</string>
+    <string name="main_output_header2_and_sleep_data">=== Sleep Classify Events ===\n%1$s</string>
+    <string name="awake_sum">Sleep Sum : %s</string>
+    <string name="light_sum">Light Sum : %s</string>
+    <string name="motion_sum">Motion Sum : %s</string>
+    <string name="range_date">%s – %s</string>
+    <string name="home">Home</string>
+    <string name="history">History</string>
+    <string name="challenge">Challenge</string>
+    <string name="profile_icon">Profile</string>
+    <string name="tab_text_1">Sleep</string>
+    <string name="tab_text_2">Analysis</string>
 </resources>

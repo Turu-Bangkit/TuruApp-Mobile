@@ -1,31 +1,32 @@
-package com.capstone.turuappmobile
+package com.capstone.turuappmobile.ui.activity.login
 
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import com.capstone.turuappmobile.databinding.ActivityMainBinding
+import com.capstone.turuappmobile.R
+import com.capstone.turuappmobile.databinding.ActivityLoginBinding
+import com.capstone.turuappmobile.ui.activity.home.HomeActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val gso = GoogleSignInOptions
@@ -36,24 +37,14 @@ class MainActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         auth = Firebase.auth
+        val firebaseUser = auth?.currentUser
+        updateUI(firebaseUser)
 
-        binding.button.setOnClickListener {
+
+        binding.signInButton.setOnClickListener {
             signIn()
         }
 
-        binding.buttonLogout.setOnClickListener {
-            Firebase.auth.signOut()
-
-            googleSignInClient.signOut().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Berhasil logout dari akun Google
-                    // Redirect ke halaman login
-                    Toast.makeText(this, "Logout Success", Toast.LENGTH_SHORT).show()
-                } else {
-                    // Gagal logout dari akun Google, tangani sesuai kebutuhan
-                }
-            }
-        }
     }
 
     private fun signIn() {
@@ -87,13 +78,20 @@ class MainActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-
+                    updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-
+                    updateUI(null)
                 }
             }
+    }
+
+    private fun updateUI(currentUser: FirebaseUser?) {
+        if (currentUser != null){
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+        }
     }
 
     companion object {
