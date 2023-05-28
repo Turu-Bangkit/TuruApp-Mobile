@@ -30,7 +30,7 @@ class UsersRepository(
         ): UsersRepository {
             return instance ?: synchronized(this) {
                 instance ?: UsersRepository(
-                    userApi1
+                    userApi
                 ).also { instance = it }
             }
         }
