@@ -5,7 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.databinding.ActivityLoginBinding
 import com.capstone.turuappmobile.ui.activity.home.HomeActivity
@@ -18,12 +21,19 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.capstone.turuappmobile.data.repository.Result
+import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
+    private var firebaseUser : FirebaseUser? = null
+
+    private val loginViewModel by viewModels<LoginViewModel> {
+        ViewModelFactoryUser.getInstance()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -37,12 +47,30 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         auth = Firebase.auth
-        val firebaseUser = auth?.currentUser
+        firebaseUser = auth.currentUser
         updateUI(firebaseUser)
 
 
         binding.signInButton.setOnClickListener {
             signIn()
+        }
+
+        loginViewModel.checkTokenResult.observe(this){
+            when(it){
+                is Result.Success -> {
+                    showLoading(false)
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                is Result.Error -> {
+                    showLoading(false)
+                    toastMaker(it.error)
+                }
+                is Result.Loading -> {
+                    showLoading(true)
+                }
+            }
         }
 
     }
@@ -77,8 +105,8 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
+                    firebaseUser = auth.currentUser
+                    loginViewModel.checkToken(idToken)
                 } else {
                     // If sign in fails, display a message to the user.
 
@@ -93,6 +121,15 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.layoutLoading.layoutAllLoading.visibility =
+            if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun toastMaker(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

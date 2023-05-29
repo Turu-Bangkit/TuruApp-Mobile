@@ -10,6 +10,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray_100">#9C9C9C</color>
     <color name="gray_200">#F2F4F6</color>
+    <color name="loading">#60686666</color>
     <color name="red_200">#CF212A</color>
     <color name="blue_200">#0A2647</color>
     <color name="blue_300">#144272</color>

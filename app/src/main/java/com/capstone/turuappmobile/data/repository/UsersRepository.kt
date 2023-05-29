@@ -1,15 +1,13 @@
 package com.capstone.turuappmobile.data.repository
 
 import com.capstone.turuappmobile.data.api.config.ApiService
-import com.capstone.turuappmobile.data.datastore.SleepSubscriptionStatus
-import com.capstone.turuappmobile.data.db.SleepClassifyEventDao
-import com.capstone.turuappmobile.data.db.SleepTimeDao
+
 
 class UsersRepository(
     private val userApi: ApiService
 ) {
 
-    suspend fun loginMember(tokenfirebase: String) = userApi.login(tokenfirebase)
+    suspend fun checkToken(tokenfirebase: String) = userApi.login(tokenfirebase)
 
     suspend fun getPoint(id: String) = userApi.getPoint(id)
 
