@@ -106,7 +106,8 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     firebaseUser = auth.currentUser
-                    loginViewModel.checkToken(idToken)
+//                    loginViewModel.checkToken(idToken)
+                    updateUI(firebaseUser)
                 } else {
                     // If sign in fails, display a message to the user.
 
