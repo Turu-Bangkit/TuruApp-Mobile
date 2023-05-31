@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.databinding.FragmentProfileBinding
 import com.capstone.turuappmobile.ui.activity.login.LoginActivity
+import com.capstone.turuappmobile.ui.animation.ShimmerAnimation
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -29,7 +30,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater , container , false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -39,10 +40,13 @@ class ProfileFragment : Fragment() {
         auth = Firebase.auth
         val firebaseUser = auth?.currentUser
 
-        binding.apply{
+        binding.apply {
             usernameProfile.text = firebaseUser?.displayName
             emailProfile.text = firebaseUser?.email
-            Glide.with(requireActivity()).load(firebaseUser?.photoUrl).into(imageProfile)
+            Glide.with(requireActivity())
+                .load(firebaseUser?.photoUrl)
+                .placeholder(ShimmerAnimation.runShimmerAnimation())
+                .into(imageProfileSource)
         }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -64,7 +68,12 @@ class ProfileFragment : Fragment() {
                     // Berhasil logout dari akun Google
                     // Redirect ke halaman login
                     requireActivity().finish()
-                    requireActivity().startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                    requireActivity().startActivity(
+                        Intent(
+                            requireActivity(),
+                            LoginActivity::class.java
+                        )
+                    )
                 } else {
                     // Gagal logout dari akun Google, tangani sesuai kebutuhan
                 }
