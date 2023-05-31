@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import java.time.Instant
 import java.util.*
 import com.capstone.turuappmobile.BuildConfig
+import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 
 class SleepActivity : AppCompatActivity() {
 
@@ -36,7 +37,12 @@ class SleepActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
+    private val sleepActivityViewModel by viewModels<SleepActivityViewModel> {
+        ViewModelFactoryUser.getInstance(this)
+    }
+
     private var sleepClassifyOutput: String = ""
+    private var userUID: String = ""
 
     private var subscribedToSleepData = false
         set(newSubscribedToSleepData) {
@@ -80,6 +86,10 @@ class SleepActivity : AppCompatActivity() {
 
         sleepPendingIntent =
             SleepReceiver.createSleepReceiverPendingIntent(context = applicationContext)
+
+        sleepActivityViewModel.getUserSession.observe(this) { user ->
+            userUID = user.UID
+        }
     }
 
     fun onClickRequestSleepData(view: View) {
@@ -93,6 +103,7 @@ class SleepActivity : AppCompatActivity() {
                 subscribeToSleepSegmentUpdates(applicationContext, sleepPendingIntent)
                 val instant = Instant.now()
                 val sleepTimeEntity = SleepTimeEntity(
+                    userUID = userUID,
                     startTime = instant.epochSecond.toInt()
                 )
                 sleepViewModel.insertStartTimeSleep(sleepTimeEntity)

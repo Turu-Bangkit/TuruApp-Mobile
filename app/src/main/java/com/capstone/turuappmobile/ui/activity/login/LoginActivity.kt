@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.capstone.turuappmobile.R
+import com.capstone.turuappmobile.data.api.model.UserPreferencesModel
 import com.capstone.turuappmobile.databinding.ActivityLoginBinding
 import com.capstone.turuappmobile.ui.activity.home.HomeActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -29,11 +30,12 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
-    private var firebaseUser : FirebaseUser? = null
+    private var firebaseUser: FirebaseUser? = null
 
     private val loginViewModel by viewModels<LoginViewModel> {
-        ViewModelFactoryUser.getInstance()
+        ViewModelFactoryUser.getInstance(this)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -55,13 +57,17 @@ class LoginActivity : AppCompatActivity() {
             signIn()
         }
 
-        loginViewModel.checkTokenResult.observe(this){
-            when(it){
+        loginViewModel.checkTokenResult.observe(this) {
+            when (it) {
                 is Result.Success -> {
+                    loginViewModel.updateUserSession(
+                        UserPreferencesModel(
+                            firebaseUser!!.uid,
+                            it.data.tokenjwt
+                        )
+                    )
                     showLoading(false)
-                    val intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    updateUI(firebaseUser)
                 }
                 is Result.Error -> {
                     showLoading(false)
@@ -106,8 +112,7 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     firebaseUser = auth.currentUser
-//                    loginViewModel.checkToken(idToken)
-                    updateUI(firebaseUser)
+                    loginViewModel.checkToken(idToken)
                 } else {
                     // If sign in fails, display a message to the user.
 
@@ -118,7 +123,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUI(currentUser: FirebaseUser?) {
-        if (currentUser != null){
+        if (currentUser != null) {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }

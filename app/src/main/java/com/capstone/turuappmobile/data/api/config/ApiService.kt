@@ -14,13 +14,14 @@ interface ApiService {
     @Field("tokenfirebase") tokenfirebase: String,
     ) : LoginResponse
 
-    @GET("point/{id)")
+    @GET("point/{id}")
     suspend fun getPoint(
+        @Header("Authorization") token: String,
         @Path("id") id: String
     ) : UserPointsResponse
 
     @FormUrlEncoded
-    @POST("point/{id)")
+    @POST("point/{id}")
     suspend fun addPoint(
         @Header("Authorization") token: String,
         @Path("id") id: String,
@@ -28,7 +29,7 @@ interface ApiService {
     ) : UserPointsResponse
 
     @FormUrlEncoded
-    @POST("time/{id)")
+    @POST("time/{id}")
     suspend fun sendSleepTime(
         @Header("Authorization") token: String,
         @Path("id") id: String,

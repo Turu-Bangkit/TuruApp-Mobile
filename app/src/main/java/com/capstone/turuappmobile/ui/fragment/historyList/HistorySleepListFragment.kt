@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.turuappmobile.adapter.HistorySleepAdapter
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
+import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentHistorySleepListBinding
 import com.capstone.turuappmobile.ui.activity.detailHistorySleep.DetailHistoryActivity
 //import com.capstone.turuappmobile.ui.activity.detailHistorySleep.DetailHistoryActivity
 //import com.capstone.turuappmobile.ui.activity.historySleep.HistorySleepAdapter
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
+import com.capstone.turuappmobile.ui.fragment.home.HomeFragmentViewModel
 
 
 class HistorySleepListFragment : Fragment() {
@@ -28,6 +30,10 @@ class HistorySleepListFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
 
+    private val historySleepListFragment by viewModels<HistorySleepListViewModel> {
+        ViewModelFactoryUser.getInstance(requireActivity())
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,15 +41,19 @@ class HistorySleepListFragment : Fragment() {
     ): View? {
         _binding = FragmentHistorySleepListBinding.inflate(inflater, container, false)
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sleepViewModel.allSleepHistory.observe(viewLifecycleOwner){ sleepHistory ->
-            setHistoryAdapter(sleepHistory)
+//        sleepViewModel.allSleepHistory.observe(viewLifecycleOwner){ sleepHistory ->
+//            setHistoryAdapter(sleepHistory)
+//        }
+
+        historySleepListFragment.getUserSession.observe(viewLifecycleOwner){
+            sleepViewModel.allSleepHistoryByUser(it.UID).observe(viewLifecycleOwner){ sleepHistory ->
+                setHistoryAdapter(sleepHistory)
+            }
         }
 
 

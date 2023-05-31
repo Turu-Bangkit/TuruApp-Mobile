@@ -1,15 +1,25 @@
 package com.capstone.turuappmobile.data.repository
 
 import com.capstone.turuappmobile.data.api.config.ApiService
+import com.capstone.turuappmobile.data.api.model.UserPreferencesModel
+import com.capstone.turuappmobile.data.datastore.SleepSubscriptionStatus
+import com.capstone.turuappmobile.data.datastore.UserDataPreferences
+import kotlinx.coroutines.flow.Flow
 
 
 class UsersRepository(
-    private val userApi: ApiService
+    private val userApi: ApiService,
+    private val userDataPreferences: UserDataPreferences
 ) {
+
+    val getUserSession: Flow<UserPreferencesModel> = userDataPreferences.getSession()
+    suspend fun updateUserSession(session: UserPreferencesModel) =
+        userDataPreferences.saveSession(session)
+
 
     suspend fun checkToken(tokenfirebase: String) = userApi.login(tokenfirebase)
 
-    suspend fun getPoint(id: String) = userApi.getPoint(id)
+    suspend fun getPoint(token : String, id: String) = userApi.getPoint(token, id)
 
     suspend fun addPoint(token: String, id: String, point: String) =
         userApi.addPoint(token, id, point)
@@ -24,11 +34,13 @@ class UsersRepository(
         private var instance: UsersRepository? = null
 
         fun getInstance(
-            userApi: ApiService
+            userApi: ApiService,
+            userDataPreferences: UserDataPreferences
         ): UsersRepository {
             return instance ?: synchronized(this) {
                 instance ?: UsersRepository(
-                    userApi
+                    userApi,
+                    userDataPreferences
                 ).also { instance = it }
             }
         }

@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.home.HomeFragment">
 
+    <include
+        android:id="@+id/layout_loading"
+        layout="@layout/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
 
     <ImageView
         android:id="@+id/imageView2"
@@ -116,5 +123,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
