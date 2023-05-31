@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "sleep_time_table")
 data class SleepTimeEntity(
-    @PrimaryKey
     @ColumnInfo(name = "id")
     val userUID: String,
+    @PrimaryKey
     @ColumnInfo(name = "start_time")
     val startTime: Int,
     @ColumnInfo(name = "end_time")

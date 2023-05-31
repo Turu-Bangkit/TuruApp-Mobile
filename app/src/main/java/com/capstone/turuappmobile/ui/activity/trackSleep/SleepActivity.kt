@@ -15,6 +15,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
@@ -28,6 +29,7 @@ import java.time.Instant
 import java.util.*
 import com.capstone.turuappmobile.BuildConfig
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SleepActivity : AppCompatActivity() {
 
@@ -64,14 +66,13 @@ class SleepActivity : AppCompatActivity() {
         binding = ActivitySleepBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sleepViewModel.subscribedToSleepDataLiveData.observe(this){newSubscribedToSleepData ->
-            if(subscribedToSleepData != newSubscribedToSleepData){
+        sleepViewModel.subscribedToSleepDataLiveData.observe(this) { newSubscribedToSleepData ->
+            if (subscribedToSleepData != newSubscribedToSleepData) {
                 subscribedToSleepData = newSubscribedToSleepData
             }
         }
 
-        sleepViewModel.allSleepClassifyEventEntities.observe(this) {
-                sleepClassifyEventEntities ->
+        sleepViewModel.allSleepClassifyEventEntities.observe(this) { sleepClassifyEventEntities ->
             Log.d(TAG, "sleepClassifyEventEntities: $sleepClassifyEventEntities")
 
             if (sleepClassifyEventEntities.isNotEmpty()) {
@@ -100,13 +101,27 @@ class SleepActivity : AppCompatActivity() {
                 Log.d("subscribedToSleepData5", "update ")
                 sleepViewModel.updateEndTimeSleep(instant.epochSecond.toInt())
             } else {
-                subscribeToSleepSegmentUpdates(applicationContext, sleepPendingIntent)
-                val instant = Instant.now()
-                val sleepTimeEntity = SleepTimeEntity(
-                    userUID = userUID,
-                    startTime = instant.epochSecond.toInt()
-                )
-                sleepViewModel.insertStartTimeSleep(sleepTimeEntity)
+
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Start Sleep ?")
+                    .setMessage("Aplikasi Akan Keluar dan Masuk ke Mode Sleep")
+                    .setNegativeButton("Cancel") { dialog, which ->
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton("Start") { dialog, which ->
+                        dialog.dismiss()
+                        subscribeToSleepSegmentUpdates(applicationContext, sleepPendingIntent)
+                        val instant = Instant.now()
+                        val sleepTimeEntity = SleepTimeEntity(
+                            userUID = userUID,
+                            startTime = instant.epochSecond.toInt()
+                        )
+                        sleepViewModel.insertStartTimeSleep(sleepTimeEntity)
+                        finishAffinity()
+                    }
+                    .show()
+
+
             }
         } else {
             requestPermissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION)
