@@ -14,10 +14,13 @@ class SleepRepository(
 ) {
 
     val subscribedToSleepDataFlow: Flow<Boolean> = sleepSubscriptionStatus.subscribedToSleepDataFlow
-
-
     suspend fun updateSubscribedToSleepData(subscribedToSleepData: Boolean) =
         sleepSubscriptionStatus.updateSubscribedToSleepData(subscribedToSleepData)
+
+    val totalOnReceiveSleep: Flow<Int> = sleepSubscriptionStatus.totalOnReceiveSleep
+
+    suspend fun updateTotalOnReceiveSleep(totalOnReceiveSleep: Int) =
+        sleepSubscriptionStatus.updateTotalOnReceiveSleep(totalOnReceiveSleep)
 
 
     val allSleepClassifyEvents: Flow<List<SleepClassifyEventEntity>> =

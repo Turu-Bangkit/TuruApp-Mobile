@@ -20,6 +20,10 @@ class SleepViewModel (private val repository: SleepRepository) : ViewModel() {
     val allSleepClassifyEventEntities: LiveData<List<SleepClassifyEventEntity>> =
         repository.allSleepClassifyEvents.asLiveData()
 
+    fun updateTotalOnReceiveSleep(totalOnReceiveSleep: Int) = viewModelScope.launch {
+        repository.updateTotalOnReceiveSleep(totalOnReceiveSleep)
+    }
+
     fun insertStartTimeSleep(timeSleep : SleepTimeEntity) = viewModelScope.launch {
         repository.insertSleepTime(timeSleep)
     }

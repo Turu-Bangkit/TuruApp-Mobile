@@ -140,6 +140,7 @@ class SleepActivity : AppCompatActivity() {
 
         task.addOnSuccessListener {
             sleepViewModel.updateSubscribedToSleepData(true)
+            sleepViewModel.updateTotalOnReceiveSleep(0)
             Log.d(TAG, "Successfully subscribed to sleep data.")
         }
         task.addOnFailureListener { exception ->
