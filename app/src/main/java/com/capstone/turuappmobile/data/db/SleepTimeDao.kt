@@ -11,6 +11,9 @@ interface SleepTimeDao {
     @Query( "SELECT * FROM sleep_time_table WHERE id = :userUID ORDER BY start_time DESC")
     fun getById(userUID : String): Flow<List<SleepTimeEntity>>
 
+    @Query( "SELECT * FROM sleep_time_table WHERE id = :userUID ORDER BY start_time DESC LIMIT 7")
+    fun getByIdLimit(userUID : String): Flow<List<SleepTimeEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sleepTimeEntity: SleepTimeEntity)
 

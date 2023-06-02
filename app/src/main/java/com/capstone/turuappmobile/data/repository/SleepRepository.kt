@@ -33,7 +33,11 @@ class SleepRepository(
 
     val allSleepTime: Flow<List<SleepTimeEntity>> = sleepTimeDao.getAll()
 
-    fun allSleepTimeByUser(userUID: String): Flow<List<SleepTimeEntity>> = sleepTimeDao.getById(userUID)
+    fun allSleepTimeByUser(userUID: String): Flow<List<SleepTimeEntity>> =
+        sleepTimeDao.getById(userUID)
+
+    fun allSleepTimeByUserLimit(userUID: String): Flow<List<SleepTimeEntity>> =
+        sleepTimeDao.getByIdLimit(userUID)
 
     suspend fun insertSleepTime(sleepTimeEntity: SleepTimeEntity) {
         sleepTimeDao.insert(sleepTimeEntity)
