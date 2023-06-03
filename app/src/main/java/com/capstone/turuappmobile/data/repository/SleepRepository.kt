@@ -54,6 +54,10 @@ class SleepRepository(
         sleepTimeDao.update(endTime)
     }
 
+    suspend fun updateRealStartTime(realStartTime: Int) {
+        sleepTimeDao.updateRealStartTime(realStartTime)
+    }
+
     companion object {
         @Volatile
         private var instance: SleepRepository? = null

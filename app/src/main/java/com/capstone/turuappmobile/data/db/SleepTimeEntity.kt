@@ -14,4 +14,6 @@ data class SleepTimeEntity(
     val startTime: Int,
     @ColumnInfo(name = "end_time")
     val endTime: Int? = null,
+    @ColumnInfo(name = "real_start_time")
+    val realStartTime: Int? = null,
     )

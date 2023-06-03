@@ -56,6 +56,7 @@ class HomeFragment : Fragment() {
                 unsubscribeToSleepSegmentUpdates(requireContext().applicationContext, sleepPendingIntent)
                 val instant = Instant.now()
                 sleepViewModel.updateEndTimeSleep(instant.epochSecond.toInt())
+
                 MaterialAlertDialogBuilder(requireActivity())
                     .setTitle("Mode Sleep Off")
                     .setPositiveButton("Ok") { dialog, which ->

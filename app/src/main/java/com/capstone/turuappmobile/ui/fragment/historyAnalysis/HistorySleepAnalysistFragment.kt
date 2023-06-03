@@ -74,7 +74,9 @@ class HistorySleepAnalysistFragment : Fragment() {
         historySleepAnalysistViewModel.getUserSession.observe(viewLifecycleOwner) { User ->
             sleepViewModel.allSleepHistoryByUser(User.UID)
                 .observe(viewLifecycleOwner) { sleepHistory ->
-                    historySleep = sleepHistory
+                    historySleep = sleepHistory.filter {
+                        it.endTime != null && it.endTime - it.startTime > 4000 && it.realStartTime != null
+                    }
                     if (historySleep.isNotEmpty()) {
 
                         startTimeList =
@@ -86,6 +88,7 @@ class HistorySleepAnalysistFragment : Fragment() {
                         startSleep = startTimeList[0]
                         endSleep = endTimeList[0]
                         timeAsleep = endSleep.minus(startSleep)
+                        timeBeforeSleep = historySleep[0].realStartTime?.minus(startSleep) ?: 0F
 
                         if (startTimeList.size > 1) {
 

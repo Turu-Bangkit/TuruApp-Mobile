@@ -10,16 +10,20 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepClassifyEventEntity
 import com.capstone.turuappmobile.data.repository.SleepRepository
 import com.capstone.turuappmobile.di.Injection
+import com.capstone.turuappmobile.ui.fragment.home.HomeFragment
+import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.SleepClassifyEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 class SleepReceiver : BroadcastReceiver() {
 
@@ -66,6 +70,13 @@ class SleepReceiver : BroadcastReceiver() {
                         "If you are awake, please open the app and turn off sleep mode",
                         ID
                     )
+                    repository.updateEndTime(Instant.now().epochSecond.toInt())
+                    val sleepPendingIntent =
+                        createSleepReceiverPendingIntent(context = context.applicationContext)
+                    unsubscribeToSleepSegmentUpdates(context.applicationContext, sleepPendingIntent, repository)
+                }
+                if(convertedToEntityVersion[0].confidence > 80){
+                    repository.updateRealStartTime(Instant.now().epochSecond.toInt())
                 }
             }
 
@@ -94,6 +105,21 @@ class SleepReceiver : BroadcastReceiver() {
         notificationManagerCompat.createNotificationChannel(channel)
         val notification = builder.build()
         notificationManagerCompat.notify(notifId, notification)
+    }
+
+    private fun unsubscribeToSleepSegmentUpdates(context: Context, pendingIntent: PendingIntent, repository: SleepRepository) {
+        Log.d(HomeFragment.TAG, "unsubscribeToSleepSegmentUpdates()")
+        val task = ActivityRecognition.getClient(context).removeSleepSegmentUpdates(pendingIntent)
+
+        task.addOnSuccessListener {
+            scope.launch {
+                repository.updateSubscribedToSleepData(false)
+            }
+            Log.d(HomeFragment.TAG, "Successfully unsubscribed to sleep data.")
+        }
+        task.addOnFailureListener { exception ->
+            Log.d(HomeFragment.TAG, "Exception when unsubscribing to sleep data: $exception")
+        }
     }
 
     companion object {
