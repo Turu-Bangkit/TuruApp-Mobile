@@ -41,7 +41,6 @@ class HistoryParentFragment : Fragment() {
             R.string.tab_text_2,
         )
 
-        const val EXTRA_USERNAME = "username"
     }
 
 }

@@ -27,6 +27,7 @@
     <string name="light_sum">Light Sum : %s</string>
     <string name="motion_sum">Motion Sum : %s</string>
     <string name="range_date">%s – %s</string>
+    <string name="range_hour">%s – %s</string>
     <string name="home">Home</string>
     <string name="history">History</string>
     <string name="challenge">Challenge</string>

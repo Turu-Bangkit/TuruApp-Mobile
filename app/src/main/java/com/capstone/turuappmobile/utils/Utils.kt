@@ -3,12 +3,20 @@ package com.capstone.turuappmobile.utils
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 import kotlin.math.sqrt
 
 fun convertEpochToDateTime(epochTime: Int): String {
     val zoneOffset = ZoneId.systemDefault().rules.getOffset(LocalDateTime.now())
     val dateTime = LocalDateTime.ofEpochSecond(epochTime.toLong(), 0, zoneOffset)
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+    return dateTime.format(formatter)
+}
+
+fun convertEpochToJustDateTime(epochTime: Int): String {
+    val zoneOffset = ZoneId.systemDefault().rules.getOffset(LocalDateTime.now())
+    val dateTime = LocalDateTime.ofEpochSecond(epochTime.toLong(), 0, zoneOffset)
+    val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("id", "ID"))
     return dateTime.format(formatter)
 }
 

@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
+import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentHistorySleepAnalysistBinding
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
 import com.capstone.turuappmobile.ui.fragment.historyList.HistorySleepListViewModel
@@ -53,7 +54,7 @@ class HistorySleepAnalysistFragment : Fragment() {
     }
 
     private val historySleepAnalysistViewModel by viewModels<HistorySleepAnalysistViewModel> {
-        ViewModelFactory.getInstance(requireActivity())
+        ViewModelFactoryUser.getInstance(requireActivity())
     }
 
 
