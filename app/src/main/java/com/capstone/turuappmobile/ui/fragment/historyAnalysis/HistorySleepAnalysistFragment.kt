@@ -3,6 +3,7 @@ package com.capstone.turuappmobile.ui.fragment.historyAnalysis
 import android.content.res.AssetFileDescriptor
 import android.content.res.AssetManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -72,12 +73,15 @@ class HistorySleepAnalysistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         historySleepAnalysistViewModel.getUserSession.observe(viewLifecycleOwner) { User ->
-            sleepViewModel.allSleepHistoryByUser(User.UID)
+            sleepViewModel.allSleepHistoryByUser(User.UID,"")
                 .observe(viewLifecycleOwner) { sleepHistory ->
                     historySleep = sleepHistory.filter {
                         it.endTime != null && it.endTime - it.startTime > 4000 && it.realStartTime != null
                     }
                     if (historySleep.isNotEmpty()) {
+
+                        timeAsleep = ((historySleep[0].endTime!!).minus(historySleep[0].startTime)).toFloat()
+                        timeBeforeSleep = (historySleep[0].realStartTime!!.minus((historySleep[0].startTime))).toFloat()
 
                         startTimeList =
                             historySleep.map { convertTimeStringToSeconds(convertEpochToHour(it.startTime)).toFloat() }
@@ -87,8 +91,7 @@ class HistorySleepAnalysistFragment : Fragment() {
 
                         startSleep = startTimeList[0]
                         endSleep = endTimeList[0]
-                        timeAsleep = endSleep.minus(startSleep)
-                        timeBeforeSleep = historySleep[0].realStartTime?.minus(startSleep) ?: 0F
+
 
                         if (startTimeList.size > 1) {
 
@@ -108,6 +111,15 @@ class HistorySleepAnalysistFragment : Fragment() {
                             regularity = 80F
                         }
 
+                        val assetManager: AssetManager = requireContext().assets
+                        val interpreter: Interpreter = loadModel(assetManager)
+                        // Dummy input, not normalized yet. Click button to see the prediction
+                        val features = featureNormalization(startSleep, endSleep, regularity, timeAsleep, timeBeforeSleep) // Quality = 77
+                        val result = targetNormalizationInverse(performInference(interpreter, features))
+                        binding.btnAnalysis.setOnClickListener {
+                            binding.textView3.text = result.toString()
+                        }
+
                     } else {
                         // TODO: Show message that there is no history
                     }
@@ -115,14 +127,7 @@ class HistorySleepAnalysistFragment : Fragment() {
         }
 
 
-        val assetManager: AssetManager = requireContext().assets
-        val interpreter: Interpreter = loadModel(assetManager)
-        // Dummy input, not normalized yet. Click button to see the prediction
-        val features = featureNormalization(startSleep, endSleep, regularity, timeAsleep, timeBeforeSleep) // Quality = 77
-        val result = targetNormalizationInverse(performInference(interpreter, features))
-        binding.btnAnalysis.setOnClickListener {
-            binding.textView3.text = result.toString()
-        }
+
 
     }
 

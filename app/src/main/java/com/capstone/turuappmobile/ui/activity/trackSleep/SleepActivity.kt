@@ -43,21 +43,7 @@ class SleepActivity : AppCompatActivity() {
         ViewModelFactoryUser.getInstance(this)
     }
 
-    private var sleepClassifyOutput: String = ""
     private var userUID: String = ""
-
-    private var subscribedToSleepData = false
-        set(newSubscribedToSleepData) {
-            field = newSubscribedToSleepData
-            if (newSubscribedToSleepData) {
-                binding.button.text = getString(R.string.sleep_button_unsubscribe_text)
-                Log.d("subscribedToSleepData5", "insert")
-
-            } else {
-                binding.button.text = getString(R.string.sleep_button_subscribe_text)
-            }
-            updateOutput()
-        }
 
     private lateinit var sleepPendingIntent: PendingIntent
 
@@ -66,24 +52,6 @@ class SleepActivity : AppCompatActivity() {
         binding = ActivitySleepBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sleepViewModel.subscribedToSleepDataLiveData.observe(this) { newSubscribedToSleepData ->
-            if (subscribedToSleepData != newSubscribedToSleepData) {
-                subscribedToSleepData = newSubscribedToSleepData
-            }
-        }
-
-        sleepViewModel.allSleepClassifyEventEntities.observe(this) { sleepClassifyEventEntities ->
-            Log.d(TAG, "sleepClassifyEventEntities: $sleepClassifyEventEntities")
-
-            if (sleepClassifyEventEntities.isNotEmpty()) {
-                // Constructor isn't accessible for [SleepClassifyEvent], so we just output the
-                // database table version.
-                sleepClassifyOutput = sleepClassifyEventEntities.joinToString {
-                    "\t$it\n"
-                }
-                updateOutput()
-            }
-        }
 
         sleepPendingIntent =
             SleepReceiver.createSleepReceiverPendingIntent(context = applicationContext)
@@ -91,38 +59,35 @@ class SleepActivity : AppCompatActivity() {
         sleepActivityViewModel.getUserSession.observe(this) { user ->
             userUID = user.UID
         }
+
+        if(activityRecognitionPermissionApproved()){
+            binding.outputTextView.text = getString(R.string.permission_approved)
+        }
     }
 
     fun onClickRequestSleepData(view: View) {
         if (activityRecognitionPermissionApproved()) {
-            if (subscribedToSleepData) {
-                unsubscribeToSleepSegmentUpdates(applicationContext, sleepPendingIntent)
-                val instant = Instant.now()
-                Log.d("subscribedToSleepData5", "update ")
-                sleepViewModel.updateEndTimeSleep(instant.epochSecond.toInt())
-            } else {
-
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Start Sleep ?")
-                    .setMessage("Aplikasi Akan Keluar dan Masuk ke Mode Sleep")
-                    .setNegativeButton("Cancel") { dialog, which ->
-                        dialog.dismiss()
-                    }
-                    .setPositiveButton("Start") { dialog, which ->
-                        dialog.dismiss()
-                        subscribeToSleepSegmentUpdates(applicationContext, sleepPendingIntent)
-                        val instant = Instant.now()
-                        val sleepTimeEntity = SleepTimeEntity(
-                            userUID = userUID,
-                            startTime = instant.epochSecond.toInt()
-                        )
-                        sleepViewModel.insertStartTimeSleep(sleepTimeEntity)
-                        finishAffinity()
-                    }
-                    .show()
 
 
-            }
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Start Sleep ?")
+                .setMessage("Aplikasi Akan Keluar dan Masuk ke Mode Sleep")
+                .setNegativeButton("Cancel") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Start") { dialog, which ->
+                    dialog.dismiss()
+                    subscribeToSleepSegmentUpdates(applicationContext, sleepPendingIntent)
+                    val instant = Instant.now()
+                    val sleepTimeEntity = SleepTimeEntity(
+                        userUID = userUID,
+                        startTime = instant.epochSecond.toInt()
+                    )
+                    sleepViewModel.insertStartTimeSleep(sleepTimeEntity)
+                    finishAffinity()
+                }
+                .show()
+
         } else {
             requestPermissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION)
         }
@@ -148,18 +113,6 @@ class SleepActivity : AppCompatActivity() {
         }
     }
 
-    private fun unsubscribeToSleepSegmentUpdates(context: Context, pendingIntent: PendingIntent) {
-        Log.d(TAG, "unsubscribeToSleepSegmentUpdates()")
-        val task = ActivityRecognition.getClient(context).removeSleepSegmentUpdates(pendingIntent)
-
-        task.addOnSuccessListener {
-            sleepViewModel.updateSubscribedToSleepData(false)
-            Log.d(TAG, "Successfully unsubscribed to sleep data.")
-        }
-        task.addOnFailureListener { exception ->
-            Log.d(TAG, "Exception when unsubscribing to sleep data: $exception")
-        }
-    }
 
 
     private fun activityRecognitionPermissionApproved(): Boolean {
@@ -185,7 +138,7 @@ class SleepActivity : AppCompatActivity() {
 
     private fun displayPermissionSettingsSnackBar() {
         Snackbar.make(
-            binding.mainActivity,
+            binding.sleepActivity,
             R.string.permission_rational,
             Snackbar.LENGTH_LONG
         )
@@ -203,25 +156,6 @@ class SleepActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             .show()
-    }
-
-    private fun updateOutput() {
-        Log.d(TAG, "updateOutput()")
-
-        val header = if (subscribedToSleepData) {
-            val timestamp = Calendar.getInstance().time.toString()
-            getString(R.string.main_output_header1_subscribed_sleep_data, timestamp)
-        } else {
-            getString(R.string.main_output_header1_unsubscribed_sleep_data)
-        }
-
-        val sleepData = getString(
-            R.string.main_output_header2_and_sleep_data,
-            sleepClassifyOutput
-        )
-
-        val newOutput = header + sleepData
-        binding.outputTextView.text = newOutput
     }
 
 

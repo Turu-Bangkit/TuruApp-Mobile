@@ -14,7 +14,7 @@
     <string name="permission_rational">Sample requires Activity Recognition permissions to function.</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="permission_approved">Permission Approved!</string>
+    <string name="permission_approved">Permission Disetujui!, tekan tombol untuk mengaktifkan mode tidur</string>
 
     <string name="start_time">Start Time : %1$s</string>
     <string name="end_time">Start Time : %1$s</string>

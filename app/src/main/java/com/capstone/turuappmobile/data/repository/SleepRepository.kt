@@ -6,6 +6,7 @@ import com.capstone.turuappmobile.data.db.SleepClassifyEventEntity
 import com.capstone.turuappmobile.data.db.SleepTimeDao
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SleepRepository(
     private val sleepClassifyEventDao: SleepClassifyEventDao,
@@ -36,8 +37,16 @@ class SleepRepository(
 
     val allSleepTime: Flow<List<SleepTimeEntity>> = sleepTimeDao.getAll()
 
-    fun allSleepTimeByUser(userUID: String): Flow<List<SleepTimeEntity>> =
-        sleepTimeDao.getById(userUID)
+    fun allSleepTimeByUser(userUID: String, query: String): Flow<List<SleepTimeEntity>> =
+        sleepTimeDao.getById(userUID).map {
+            it.filter { sleepTimeEntity ->
+                sleepTimeEntity.startTime.toString().contains(query, ignoreCase = true)
+            }
+        }
+
+    fun sleepTimeByRangeDate(userUID: String, startDate : Int , endDate : Int): Flow<List<SleepTimeEntity>> =
+        sleepTimeDao.getByRangeDate(userUID, startDate, endDate)
+
 
     fun allSleepTimeByUserLimit(userUID: String): Flow<List<SleepTimeEntity>> =
         sleepTimeDao.getByIdLimit(userUID)

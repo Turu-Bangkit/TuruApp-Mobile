@@ -34,11 +34,14 @@ class SleepViewModel (private val repository: SleepRepository) : ViewModel() {
 
     val allSleepHistory: LiveData<List<SleepTimeEntity>> = repository.allSleepTime.asLiveData()
 
-    fun allSleepHistoryByUser(userUID: String): LiveData<List<SleepTimeEntity>> =
-        repository.allSleepTimeByUser(userUID).asLiveData()
+    fun allSleepHistoryByUser(userUID: String, query: String): LiveData<List<SleepTimeEntity>> =
+        repository.allSleepTimeByUser(userUID, query).asLiveData()
 
     fun allSleepHistoryByUserLimit(userUID: String): LiveData<List<SleepTimeEntity>> =
         repository.allSleepTimeByUserLimit(userUID).asLiveData()
+
+    fun allSleepHistoryByRangeDate(userUID: String, startDate : Int , endDate : Int): LiveData<List<SleepTimeEntity>> =
+        repository.sleepTimeByRangeDate(userUID, startDate, endDate).asLiveData()
 
     fun allByEpoch(startTime: Int, endTime: Int): LiveData<List<SleepClassifyEventEntity>> =
         repository.allByEpoch(startTime, endTime).asLiveData()

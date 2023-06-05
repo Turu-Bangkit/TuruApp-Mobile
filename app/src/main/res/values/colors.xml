@@ -14,9 +14,10 @@
     <color name="red_200">#CF212A</color>
     <color name="blue_200">#0A2647</color>
     <color name="blue_300">#144272</color>
-    <color name="blue_400">#205295</color>
+    <color name="blue_400">#144272</color>
     <color name="blue_500">#2C74B3</color>
     <color name="blue_600">#1C82AD</color>
     <color name="green_200">#03C988</color>
     <color name="green_600">#D5FCEF</color>
+    <color name="green_100">#335F6A</color>
 </resources>
