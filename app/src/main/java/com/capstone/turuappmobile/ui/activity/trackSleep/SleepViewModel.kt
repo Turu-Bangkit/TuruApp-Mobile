@@ -3,6 +3,7 @@ package com.capstone.turuappmobile.ui.activity.trackSleep
 import androidx.lifecycle.*
 import com.capstone.turuappmobile.data.repository.SleepRepository
 import com.capstone.turuappmobile.data.db.SleepClassifyEventEntity
+import com.capstone.turuappmobile.data.db.SleepQualityEntity
 import com.capstone.turuappmobile.data.db.SleepSumEntity
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import kotlinx.coroutines.flow.flowOf
@@ -45,6 +46,13 @@ class SleepViewModel (private val repository: SleepRepository) : ViewModel() {
 
     fun allByEpoch(startTime: Int, endTime: Int): LiveData<List<SleepClassifyEventEntity>> =
         repository.allByEpoch(startTime, endTime).asLiveData()
+
+    fun allSleepQuality(userUID: String): LiveData<List<SleepQualityEntity>> =
+        repository.allSleepQualityLimit(userUID).asLiveData()
+
+    fun insertSleepQuality (sleepQualityEntity: SleepQualityEntity) = viewModelScope.launch {
+        repository.insertSleepQuality(sleepQualityEntity)
+    }
 
 
 

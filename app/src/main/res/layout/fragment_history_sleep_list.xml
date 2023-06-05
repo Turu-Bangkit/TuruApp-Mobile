@@ -44,13 +44,14 @@
                     app:layout_constraintEnd_toStartOf="@+id/filter_btn"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
+                    android:backgroundTint="@color/blue_100"
                     app:strokeColor="@color/blue_600">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textColor="@color/green_200"
+                        android:textColor="@color/blue_600"
                         android:text="All" />
 
                 </com.google.android.material.card.MaterialCardView>
@@ -60,7 +61,7 @@
                     style="?attr/materialCardViewFilledStyle"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:backgroundTint="@color/gray_200"
+                    android:backgroundTint="@color/blue_100"
                     android:clickable="true"
                     app:cardCornerRadius="50dp"
                     app:cardElevation="0dp"

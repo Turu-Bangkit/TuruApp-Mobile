@@ -13,12 +13,13 @@
         android:layout_height="34dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/calendar_icon"
+        app:tint="@color/green_200"
         />
 
     <View
         android:layout_width="0.5dp"
         android:layout_height="match_parent"
-        android:background="@color/blue_600"
+        android:background="@color/white_100"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="8dp"
         />

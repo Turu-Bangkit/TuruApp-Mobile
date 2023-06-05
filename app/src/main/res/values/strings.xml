@@ -34,4 +34,8 @@
     <string name="profile_icon">Profile</string>
     <string name="tab_text_1">Sleep</string>
     <string name="tab_text_2">Analysis</string>
+
+    <string name="result_quality">%s%%</string>
+    <string name="last_checked">Last Checked :\n%s</string>
+
 </resources>

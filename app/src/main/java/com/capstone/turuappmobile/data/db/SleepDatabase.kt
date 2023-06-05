@@ -10,8 +10,8 @@ import com.capstone.turuappmobile.data.db.SleepClassifyEventDao
 private const val DATABASE_NAME = "sleep_segments_database"
 
 @Database(
-    entities = [SleepClassifyEventEntity::class , SleepTimeEntity::class],
-    version = 1,
+    entities = [SleepClassifyEventEntity::class , SleepTimeEntity::class, SleepQualityEntity::class],
+    version = 2,
     exportSchema = false
 )
 abstract class SleepDatabase : RoomDatabase() {
@@ -19,6 +19,7 @@ abstract class SleepDatabase : RoomDatabase() {
     abstract fun sleepClassifyEventDao() : SleepClassifyEventDao
 
     abstract fun sleepTimeDao() : SleepTimeDao
+    abstract fun sleepQualityDao() : SleepQualityDao
 
 
     companion object {

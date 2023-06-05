@@ -13,6 +13,7 @@ import com.capstone.turuappmobile.databinding.ActivityDetailHistoryBinding
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
 import com.capstone.turuappmobile.utils.convertEpochToDateTime
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -82,6 +83,10 @@ class DetailHistoryActivity : AppCompatActivity(), OnChartValueSelectedListener 
             lightDataSet.color = getColor(R.color.blue_400)
             motionDataSet.color = getColor(R.color.blue_600)
 
+            confidenceDataSet.setValueTextColors(listOf(getColor(R.color.white_100)))
+            lightDataSet.setValueTextColors(listOf(getColor(R.color.white_100)))
+            motionDataSet.setValueTextColors(listOf(getColor(R.color.white_100)))
+
             val barData = BarData(confidenceDataSet, lightDataSet, motionDataSet)
             barData.barWidth = 0.5f
             barData.setDrawValues(false)
@@ -89,10 +94,13 @@ class DetailHistoryActivity : AppCompatActivity(), OnChartValueSelectedListener 
 
             val xAxis: XAxis = binding.chart.xAxis
             xAxis.granularity = 1f
+            xAxis.textColor = getColor(R.color.white_100)
 
 
             binding.chart.setOnChartValueSelectedListener(this)
             binding.chart.apply {
+                axisLeft.textColor = getColor(R.color.white_100)
+                axisRight.isEnabled = false
                 data = barData
                 legend.isEnabled = false
                 description.isEnabled = false

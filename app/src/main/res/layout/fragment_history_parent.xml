@@ -8,6 +8,7 @@
     tools:context=".ui.fragment.history.HistoryParentFragment">
 
     <com.google.android.material.tabs.TabLayout
+        android:backgroundTint="@color/blue_100"
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -10,7 +10,7 @@
         android:id="@+id/myToolbarDetailHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue_200"
+        android:background="@color/blue_100"
         app:navigationIcon="@drawable/baseline_arrow_back"
         app:navigationIconTint="@color/green_200"
         app:title="Detail History Sleep"

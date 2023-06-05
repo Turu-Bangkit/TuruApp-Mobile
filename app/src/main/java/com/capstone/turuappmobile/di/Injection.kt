@@ -17,8 +17,9 @@ object Injection {
         val database = SleepDatabase.getDatabase(context)
         val sleepTimeDao = database.sleepTimeDao()
         val sleepClassifyEventDao = database.sleepClassifyEventDao()
+        val sleepQualityDao = database.sleepQualityDao()
         val sleepSubscriptionStatus = SleepSubscriptionStatus(context.createDataStore(name = SLEEP_PREFERENCES_NAME))
-        return SleepRepository.getInstance(sleepClassifyEventDao, sleepTimeDao, sleepSubscriptionStatus)
+        return SleepRepository.getInstance(sleepClassifyEventDao, sleepTimeDao, sleepQualityDao, sleepSubscriptionStatus)
     }
 
     fun provideUserRepository(context: Context): UsersRepository {

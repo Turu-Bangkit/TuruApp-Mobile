@@ -1,16 +1,14 @@
 package com.capstone.turuappmobile.data.repository
 
 import com.capstone.turuappmobile.data.datastore.SleepSubscriptionStatus
-import com.capstone.turuappmobile.data.db.SleepClassifyEventDao
-import com.capstone.turuappmobile.data.db.SleepClassifyEventEntity
-import com.capstone.turuappmobile.data.db.SleepTimeDao
-import com.capstone.turuappmobile.data.db.SleepTimeEntity
+import com.capstone.turuappmobile.data.db.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class SleepRepository(
     private val sleepClassifyEventDao: SleepClassifyEventDao,
     private val sleepTimeDao: SleepTimeDao,
+    private val sleepQualityDao: SleepQualityDao,
     private val sleepSubscriptionStatus: SleepSubscriptionStatus
 ) {
 
@@ -67,6 +65,12 @@ class SleepRepository(
         sleepTimeDao.updateRealStartTime(realStartTime)
     }
 
+    suspend fun insertSleepQuality(sleepQualityEntity: SleepQualityEntity) {
+        sleepQualityDao.insert(sleepQualityEntity)
+    }
+    fun allSleepQualityLimit(userUID: String): Flow<List<SleepQualityEntity>> =
+        sleepQualityDao.getQualityLimit(userUID)
+
     companion object {
         @Volatile
         private var instance: SleepRepository? = null
@@ -74,12 +78,14 @@ class SleepRepository(
         fun getInstance(
             sleepClassifyEventDao: SleepClassifyEventDao,
             sleepTimeDao: SleepTimeDao,
+            sleepQualityDao: SleepQualityDao,
             sleepSubscriptionStatus: SleepSubscriptionStatus
         ): SleepRepository {
             return instance ?: synchronized(this) {
                 instance ?: SleepRepository(
                     sleepClassifyEventDao,
                     sleepTimeDao,
+                    sleepQualityDao,
                     sleepSubscriptionStatus
                 ).also { instance = it }
             }

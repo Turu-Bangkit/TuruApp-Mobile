@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.layoutLoading.layoutAllLoading.visibility =
+        binding.layoutLoadingPoints.itemPointsShimmer.visibility =
             if (isLoading) View.VISIBLE else View.GONE
     }
 
