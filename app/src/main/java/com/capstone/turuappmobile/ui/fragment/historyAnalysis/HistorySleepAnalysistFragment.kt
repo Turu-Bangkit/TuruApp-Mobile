@@ -201,6 +201,8 @@ class HistorySleepAnalysistFragment : Fragment() {
             description.isEnabled = false
             legend.isEnabled = false
 
+
+
             val confidenceEntries = ArrayList<Entry>()
             sleepQuality.forEach {
                 confidenceEntries.add(Entry(sleepQuality.indexOf(it).toFloat(), it))

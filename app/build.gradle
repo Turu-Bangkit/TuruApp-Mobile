@@ -109,4 +109,7 @@ dependencies {
 
     // lottie animation
     implementation "com.airbnb.android:lottie:6.0.0"
+
+    // awesome dialog
+    implementation 'com.github.chnouman:AwesomeDialog:1.0.5'
 }

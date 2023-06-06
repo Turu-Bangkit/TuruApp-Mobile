@@ -1,5 +1,8 @@
 package com.capstone.turuappmobile.utils
 
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.capstone.turuappmobile.ui.animation.ShimmerAnimation
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -56,4 +59,11 @@ fun calculateStandardDeviation(data: List<Float>, mean: Float): Float {
 fun calculateCoefficientOfVariation(data: List<Float>, mean: Float): Float {
     val standardDeviation = calculateStandardDeviation(data, mean)
     return standardDeviation / mean * 100
+}
+
+fun ImageView.loadImage(url: String?) {
+    Glide.with(this.context)
+        .load(url)
+        .placeholder(ShimmerAnimation.runShimmerAnimation())
+        .into(this)
 }

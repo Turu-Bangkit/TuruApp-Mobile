@@ -10,6 +10,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white_100">#DADADA</color>
     <color name="gray_100">#9C9C9C</color>
+    <color name="gray_50">#666666</color>
     <color name="gray_200">#F2F4F6</color>
     <color name="loading">#60686666</color>
     <color name="red_200">#CF212A</color>
@@ -23,4 +24,5 @@
     <color name="green_200">#02A26D</color>
     <color name="green_600">#D5FCEF</color>
     <color name="green_100">#335F6A</color>
+    <color name="green_150">#96C8CD</color>
 </resources>

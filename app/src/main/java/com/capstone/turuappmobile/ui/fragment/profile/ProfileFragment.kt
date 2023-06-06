@@ -2,26 +2,31 @@ package com.capstone.turuappmobile.ui.fragment.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.capstone.turuappmobile.R
+import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentProfileBinding
 import com.capstone.turuappmobile.ui.activity.login.LoginActivity
 import com.capstone.turuappmobile.ui.animation.ShimmerAnimation
 import com.capstone.turuappmobile.ui.fragment.home.HomeFragmentViewModel
+import com.example.awesomedialog.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.time.Instant
 
 
 class ProfileFragment : Fragment() {
@@ -71,7 +76,7 @@ class ProfileFragment : Fragment() {
             return
         }
 
-        profileViewModel.getUserSession.observe(viewLifecycleOwner){
+        profileViewModel.getUserSession.observe(viewLifecycleOwner) {
             profileViewModel.checkPoints(it.jwtToken, it.UID)
         }
 
@@ -92,23 +97,45 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnLogout.setOnClickListener {
-            Firebase.auth.signOut()
 
-            googleSignInClient.signOut().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Berhasil logout dari akun Google
-                    // Redirect ke halaman login
-                    requireActivity().finish()
-                    requireActivity().startActivity(
-                        Intent(
-                            requireActivity(),
-                            LoginActivity::class.java
-                        )
-                    )
-                } else {
-                    // Gagal logout dari akun Google, tangani sesuai kebutuhan
+            AwesomeDialog.build(requireActivity())
+                .title("Log Out")
+                .body(
+                    "Are you sure want to logout ?",
+                )
+                .background(R.drawable.bg_rounded_blue200)
+                .position(AwesomeDialog.POSITIONS.CENTER)
+                .onPositive(
+                    "Logout",
+                    buttonBackgroundColor = R.drawable.bg_rounded_blue500,
+                    textColor = ContextCompat.getColor(requireActivity(), R.color.white)
+                ) {
+                    Firebase.auth.signOut()
+
+                    googleSignInClient.signOut().addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // Berhasil logout dari akun Google
+                            // Redirect ke halaman login
+                            requireActivity().finish()
+                            requireActivity().startActivity(
+                                Intent(
+                                    requireActivity(),
+                                    LoginActivity::class.java
+                                )
+                            )
+                        } else {
+                            // Gagal logout dari akun Google, tangani sesuai kebutuhan
+                        }
+                    }
                 }
-            }
+                .onNegative(
+                    "Cancel",
+                    buttonBackgroundColor = R.drawable.bg_edit_text,
+                    textColor = ContextCompat.getColor(requireActivity(), R.color.green_200)
+                ) {
+                    Log.d("TAG", "negative ")
+                }
+
 
         }
 

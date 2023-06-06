@@ -15,7 +15,6 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
@@ -29,7 +28,7 @@ import java.time.Instant
 import java.util.*
 import com.capstone.turuappmobile.BuildConfig
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.example.awesomedialog.*
 
 class SleepActivity : AppCompatActivity() {
 
@@ -60,7 +59,7 @@ class SleepActivity : AppCompatActivity() {
             userUID = user.UID
         }
 
-        if(activityRecognitionPermissionApproved()){
+        if (activityRecognitionPermissionApproved()) {
             binding.outputTextView.text = getString(R.string.permission_approved)
         }
     }
@@ -68,15 +67,15 @@ class SleepActivity : AppCompatActivity() {
     fun onClickRequestSleepData(view: View) {
         if (activityRecognitionPermissionApproved()) {
 
-
-            MaterialAlertDialogBuilder(this)
-                .setTitle("Start Sleep ?")
-                .setMessage("Aplikasi Akan Keluar dan Masuk ke Mode Sleep")
-                .setNegativeButton("Cancel") { dialog, which ->
-                    dialog.dismiss()
-                }
-                .setPositiveButton("Start") { dialog, which ->
-                    dialog.dismiss()
+            AwesomeDialog.build(this)
+                .title("Start Sleep ?")
+                .body(
+                    "Aplikasi Akan Keluar dan Masuk ke Mode Sleep"
+                )
+                .background(R.drawable.bg_rounded_green100)
+                .onPositive("Start",
+                    buttonBackgroundColor = R.drawable.bg_rounded_green150,
+                    textColor = ContextCompat.getColor(this, R.color.white)) {
                     subscribeToSleepSegmentUpdates(applicationContext, sleepPendingIntent)
                     val instant = Instant.now()
                     val sleepTimeEntity = SleepTimeEntity(
@@ -86,7 +85,33 @@ class SleepActivity : AppCompatActivity() {
                     sleepViewModel.insertStartTimeSleep(sleepTimeEntity)
                     finishAffinity()
                 }
-                .show()
+                .onNegative(
+                    "Cancel",
+                    buttonBackgroundColor = R.drawable.bg_edit_text,
+                    textColor = ContextCompat.getColor(this, R.color.green_200)
+                ) {
+                    Log.d("TAG", "negative ")
+                }
+
+
+//            MaterialAlertDialogBuilder(this)
+//                .setTitle("Start Sleep ?")
+//                .setMessage("Aplikasi Akan Keluar dan Masuk ke Mode Sleep")
+//                .setNegativeButton("Cancel") { dialog, which ->
+//                    dialog.dismiss()
+//                }
+//                .setPositiveButton("Start") { dialog, which ->
+//                    dialog.dismiss()
+//                    subscribeToSleepSegmentUpdates(applicationContext, sleepPendingIntent)
+//                    val instant = Instant.now()
+//                    val sleepTimeEntity = SleepTimeEntity(
+//                        userUID = userUID,
+//                        startTime = instant.epochSecond.toInt()
+//                    )
+//                    sleepViewModel.insertStartTimeSleep(sleepTimeEntity)
+//                    finishAffinity()
+//                }
+//                .show()
 
         } else {
             requestPermissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION)
@@ -112,7 +137,6 @@ class SleepActivity : AppCompatActivity() {
             Log.d(TAG, "Exception when subscribing to sleep data: $exception")
         }
     }
-
 
 
     private fun activityRecognitionPermissionApproved(): Boolean {
