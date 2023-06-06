@@ -38,4 +38,7 @@
     <string name="result_quality">%s%%</string>
     <string name="last_checked">Last Checked :\n%s</string>
 
+    <string name="sleep_quality_nodata">No Data</string>
+    <string name="no_sleep_data">No Sleep Data</string>
+
 </resources>

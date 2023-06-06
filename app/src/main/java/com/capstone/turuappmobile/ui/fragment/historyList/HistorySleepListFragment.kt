@@ -59,9 +59,6 @@ class HistorySleepListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        sleepViewModel.allSleepHistory.observe(viewLifecycleOwner){ sleepHistory ->
-//            setHistoryAdapter(sleepHistory)
-//        }
 
         historySleepListFragment.getUserSession.observe(viewLifecycleOwner) { userPreferencesModel ->
             userUID = userPreferencesModel.UID
@@ -70,6 +67,11 @@ class HistorySleepListFragment : Fragment() {
                     val sleepHistoryFilter = sleepHistory.filter {
                         it.endTime != null && it.endTime - it.startTime > 4000 && it.realStartTime != null
                     }
+
+                    if(sleepHistoryFilter.isEmpty()) {
+                        showEmptyDataLayout(true)
+                    }
+
                     setHistoryAdapter(sleepHistoryFilter)
                 }
         }
@@ -100,6 +102,11 @@ class HistorySleepListFragment : Fragment() {
         }
         binding.rvHistorySleep.layoutManager = LinearLayoutManager(requireActivity())
         binding.rvHistorySleep.adapter = adapter
+    }
+
+    private fun showEmptyDataLayout(isLoading: Boolean) {
+        binding.layoutLoadingEmpty.layoutEmpty.visibility =
+            if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun showDatePickerStart(view: View) {

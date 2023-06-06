@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
+import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentHomeBinding
@@ -53,7 +55,10 @@ class HomeFragment : Fragment() {
             if (newSubscribedToSleepData) {
                 val sleepPendingIntent =
                     SleepReceiver.createSleepReceiverPendingIntent(context = requireContext().applicationContext)
-                unsubscribeToSleepSegmentUpdates(requireContext().applicationContext, sleepPendingIntent)
+                unsubscribeToSleepSegmentUpdates(
+                    requireContext().applicationContext,
+                    sleepPendingIntent
+                )
                 val instant = Instant.now()
                 sleepViewModel.updateEndTimeSleep(instant.epochSecond.toInt())
 
@@ -66,9 +71,34 @@ class HomeFragment : Fragment() {
             }
         }
 
-        homeFragmentViewModel.getUserSession.observe(viewLifecycleOwner) {
-            Log.d("Testing get UID and Token", "UID: ${it.UID} Token: ${it.jwtToken}")
-            homeFragmentViewModel.checkPoints(it.jwtToken, it.UID)
+        homeFragmentViewModel.getUserSession.observe(viewLifecycleOwner) { preferencesModel ->
+            Log.d(
+                "Testing get UID and Token",
+                "UID: ${preferencesModel.UID} Token: ${preferencesModel.jwtToken}"
+            )
+
+            sleepViewModel.allSleepQuality(preferencesModel.UID).observe(viewLifecycleOwner) {
+                var sleepQuality = ""
+                var textSize = 0F
+                if (it.isNotEmpty()) {
+                    sleepQuality = requireActivity().getString(
+                        R.string.result_quality,
+                        it.last().sleepQuality.toString()
+                    )
+                    textSize = 26F
+                } else {
+                    sleepQuality = requireActivity().getString(R.string.sleep_quality_nodata)
+                    textSize = 20F
+                }
+
+                binding.sleepQualityHomeTxt.apply {
+                    text = sleepQuality
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
+                }
+
+            }
+            homeFragmentViewModel.checkPoints(preferencesModel.jwtToken, preferencesModel.UID)
+
         }
 
         homeFragmentViewModel.checkPointResult.observe(viewLifecycleOwner) {

@@ -10,6 +10,7 @@ import com.capstone.turuappmobile.ui.activity.trackSleep.SleepActivityViewModel
 import com.capstone.turuappmobile.ui.fragment.historyAnalysis.HistorySleepAnalysistViewModel
 import com.capstone.turuappmobile.ui.fragment.historyList.HistorySleepListViewModel
 import com.capstone.turuappmobile.ui.fragment.home.HomeFragmentViewModel
+import com.capstone.turuappmobile.ui.fragment.profile.ProfileViewModel
 
 
 class ViewModelFactoryUser(
@@ -28,6 +29,8 @@ class ViewModelFactoryUser(
             return HistorySleepListViewModel(usersRepository) as T
         } else if (modelClass.isAssignableFrom(HistorySleepAnalysistViewModel::class.java)) {
             return HistorySleepAnalysistViewModel(usersRepository) as T
+        } else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            return ProfileViewModel(usersRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

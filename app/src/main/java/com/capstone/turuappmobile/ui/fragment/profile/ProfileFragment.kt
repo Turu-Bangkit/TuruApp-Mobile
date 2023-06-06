@@ -6,11 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.capstone.turuappmobile.R
+import com.capstone.turuappmobile.data.repository.Result
+import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentProfileBinding
 import com.capstone.turuappmobile.ui.activity.login.LoginActivity
 import com.capstone.turuappmobile.ui.animation.ShimmerAnimation
+import com.capstone.turuappmobile.ui.fragment.home.HomeFragmentViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -26,6 +31,12 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private var auth: FirebaseAuth? = null
     private lateinit var googleSignInClient: GoogleSignInClient
+
+
+    private val profileViewModel by viewModels<ProfileViewModel> {
+        ViewModelFactoryUser.getInstance(requireActivity())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +71,26 @@ class ProfileFragment : Fragment() {
             return
         }
 
+        profileViewModel.getUserSession.observe(viewLifecycleOwner){
+            profileViewModel.checkPoints(it.jwtToken, it.UID)
+        }
+
+        profileViewModel.checkPointResult.observe(viewLifecycleOwner) {
+            when (it) {
+                is Result.Loading -> {
+                    showLoading(true)
+                }
+                is Result.Success -> {
+                    showLoading(false)
+                    binding.pointsProfile.text = it.data.point
+                }
+                is Result.Error -> {
+                    showLoading(false)
+                    toastMaker(it.error)
+                }
+            }
+        }
+
         binding.btnLogout.setOnClickListener {
             Firebase.auth.signOut()
 
@@ -80,6 +111,17 @@ class ProfileFragment : Fragment() {
             }
 
         }
+
+
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.pointsProfileShimmer.visibility =
+            if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun toastMaker(message: String) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
     }
 
 }

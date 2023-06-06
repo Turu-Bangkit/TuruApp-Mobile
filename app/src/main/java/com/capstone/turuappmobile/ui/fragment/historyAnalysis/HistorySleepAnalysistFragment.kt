@@ -84,12 +84,6 @@ class HistorySleepAnalysistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val instant = Instant.now()
-
-        binding.lastCheckedTxt.text = requireActivity().resources.getString(
-            R.string.last_checked,
-            convertEpochToJustDateTime(instant.epochSecond.toInt())
-        )
 
         historySleepAnalysistViewModel.getUserSession.observe(viewLifecycleOwner) { User ->
             userUID = User.UID
@@ -152,7 +146,10 @@ class HistorySleepAnalysistFragment : Fragment() {
                             convertEpochToJustDateTime(instant.epochSecond.toInt())
                         )
                         binding.sleepQualityValueTxt.text =
-                            requireActivity().resources.getString(R.string.result_quality, result.toString())
+                            requireActivity().resources.getString(
+                                R.string.result_quality,
+                                result.toString()
+                            )
                         binding.sleepQualityStatusTxt.text = qualityCondition(result)
                         sleepViewModel.insertSleepQuality(SleepQualityEntity(1, result, userUID))
 
@@ -163,14 +160,17 @@ class HistorySleepAnalysistFragment : Fragment() {
 
             sleepViewModel.allSleepQuality(User.UID)
                 .observe(viewLifecycleOwner) { qualityEntities ->
-                    qualityEntities.forEach {
-                        sleepQuality.add(it.sleepQuality)
-                    }
+                    if (qualityEntities.isNotEmpty()) {
+                        showEmptyDataLayout(false)
+                        qualityEntities.forEach {
+                            sleepQuality.add(it.sleepQuality)
+                        }
 
-                    binding.averageSleepQualityTxt.text = requireActivity().resources.getString(
-                        R.string.result_quality,
-                        sleepQuality.average().toInt().toString()
-                    )
+                        binding.averageSleepQualityTxt.text = requireActivity().resources.getString(
+                            R.string.result_quality,
+                            sleepQuality.average().toInt().toString()
+                        )
+                    }
                 }
         }
 
@@ -288,6 +288,11 @@ class HistorySleepAnalysistFragment : Fragment() {
             quality < 80f -> "Good"
             else -> "Very Good"
         }
+    }
+
+    private fun showEmptyDataLayout(isLoading: Boolean) {
+        binding.layoutLoadingEmpty.layoutEmpty.visibility =
+            if (isLoading) View.VISIBLE else View.GONE
     }
 
 
