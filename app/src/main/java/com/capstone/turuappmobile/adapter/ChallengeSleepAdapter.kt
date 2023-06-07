@@ -21,7 +21,7 @@ import com.capstone.turuappmobile.utils.loadImage
 class ChallengeSleepAdapter (
     private val challengeList: List<DataItem>,
     private val context: Context,
-    private val onClick: (SleepTimeEntity) -> Unit
+    private val onClick: (DataItem) -> Unit
 ) : ListAdapter<DataItem, ChallengeSleepAdapter.ListViewHolder>(DIFF_CALLBACK) {
 
     class ListViewHolder(var binding: ItemRowChallengeBinding) :
@@ -38,13 +38,17 @@ class ChallengeSleepAdapter (
         holder.binding.apply {
 
             namaChallengeTxt.text = challengeEntity.name
-            pointsTxt.text = challengeEntity.point.toString()
+            pointsTxt.text = context.resources.getString(R.string.points, challengeEntity.point.toString())
             imageChallenge.loadImage(challengeEntity.img)
-
+            holder.itemView.setOnClickListener {
+                onClick(challengeEntity)
+            }
         }
     }
 
     override fun getItemCount(): Int = challengeList.size
+
+
 
     companion object {
         val DIFF_CALLBACK: DiffUtil.ItemCallback<DataItem> =

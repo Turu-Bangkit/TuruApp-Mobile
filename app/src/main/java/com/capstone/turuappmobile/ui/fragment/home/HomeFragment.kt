@@ -51,6 +51,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.challengeProgressHome.progress = 50
+
         sleepViewModel.subscribedToSleepDataLiveData.observe(viewLifecycleOwner) { newSubscribedToSleepData ->
             if (newSubscribedToSleepData) {
                 val sleepPendingIntent =

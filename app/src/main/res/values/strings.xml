@@ -41,4 +41,6 @@
     <string name="sleep_quality_nodata">No Data</string>
     <string name="no_sleep_data">No Sleep Data</string>
 
+    <string name="points">%s Points</string>
+
 </resources>

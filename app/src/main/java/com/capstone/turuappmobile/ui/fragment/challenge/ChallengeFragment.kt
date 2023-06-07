@@ -5,56 +5,92 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.capstone.turuappmobile.R
+import com.capstone.turuappmobile.adapter.ChallengeSleepAdapter
+import com.capstone.turuappmobile.data.api.model.DataItem
+import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
+import com.capstone.turuappmobile.databinding.FragmentChallengeBinding
+import com.capstone.turuappmobile.ui.fragment.home.HomeFragmentViewModel
+import com.capstone.turuappmobile.data.repository.Result
+import com.capstone.turuappmobile.ui.animation.ShimmerAnimation
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ChallengeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ChallengeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private var _binding: FragmentChallengeBinding? = null
+    private val binding get() = _binding!!
+
+    private var userToken = ""
+
+
+    private val challengeFragmentViewModel by viewModels<ChallengeFragmentViewModel> {
+        ViewModelFactoryUser.getInstance(requireActivity())
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_challenge, container, false)
+        _binding = FragmentChallengeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChallengeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChallengeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        challengeFragmentViewModel.getUserSession.observe(viewLifecycleOwner){ preferencesModel ->
+
+            userToken = preferencesModel.jwtToken
+
+            if(!challengeFragmentViewModel.getAlreadyCall()){
+                challengeFragmentViewModel.allChallenge(userToken)
+            }
+
+            challengeFragmentViewModel.challengeResult.observe(viewLifecycleOwner){
+
+                when(it){
+                    is Result.Loading -> {
+                        showLoading(true)
+                    }
+                    is Result.Success -> {
+                        showLoading(false)
+                        challengeFragmentViewModel.alreadyCall()
+                        setAllChallengeAdapter(it.data.data)
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        toastMaker(it.error)
+                    }
                 }
             }
+        }
+
     }
+
+    private fun setAllChallengeAdapter(listChallenge: List<DataItem>){
+        val adapter = ChallengeSleepAdapter(listChallenge, requireActivity()){
+            toastMaker(it.name)
+        }
+        binding.rvChallengeList.layoutManager = GridLayoutManager(requireActivity(), 2)
+        binding.rvChallengeList.setHasFixedSize(true)
+        binding.rvChallengeList.adapter = adapter
+    }
+    private fun showLoading(isLoading: Boolean) {
+        binding.layoutLoadingChallenge.visibility =
+            if (isLoading){
+                binding.layoutLoadingChallenge.startShimmer()
+                View.VISIBLE
+            } else {
+                binding.layoutLoadingChallenge.stopShimmer()
+                View.GONE
+            }
+    }
+
+    private fun toastMaker(message: String) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+    }
+
 }
