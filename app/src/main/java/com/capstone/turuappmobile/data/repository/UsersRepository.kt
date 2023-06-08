@@ -19,7 +19,7 @@ class UsersRepository(
 
     suspend fun checkToken(tokenfirebase: String) = userApi.login(tokenfirebase)
 
-    suspend fun getPoint(token : String, id: String) = userApi.getPoint(token, id)
+    suspend fun getPoint(token: String, id: String) = userApi.getPoint(token, id)
 
     suspend fun addPoint(token: String, id: String, point: String) =
         userApi.addPoint(token, id, point)
@@ -28,6 +28,12 @@ class UsersRepository(
         userApi.sendSleepTime(token, id, sleepTime, endTime)
 
     suspend fun getAllChallenge(token: String) = userApi.getAllChallenge(token)
+
+    suspend fun getDetailChallenge(token: String, idChallenge: String) =
+        userApi.getDetailChallenge(token, idChallenge)
+
+    suspend fun startChallenge(token: String, UIDUser: String, idChallenge: String) =
+        userApi.startChallenge(token, UIDUser, idChallenge)
 
     companion object {
         @Volatile

@@ -1,9 +1,6 @@
 package com.capstone.turuappmobile.data.api.config
 
-import com.capstone.turuappmobile.data.api.model.AllChallengeResponse
-import com.capstone.turuappmobile.data.api.model.BasicResponse
-import com.capstone.turuappmobile.data.api.model.LoginResponse
-import com.capstone.turuappmobile.data.api.model.UserPointsResponse
+import com.capstone.turuappmobile.data.api.model.*
 import retrofit2.http.*
 
 interface ApiService {
@@ -41,4 +38,18 @@ interface ApiService {
     suspend fun getAllChallenge(
         @Header("Authorization") token: String,
     ) : AllChallengeResponse
+
+    @GET("challenge/{idChallenge}")
+    suspend fun getDetailChallenge(
+        @Header("Authorization") token: String,
+        @Path("idChallenge") idChallenge: String,
+    ) : DetailChallengeResponse
+
+    @POST("chooseChallenge/{UIDUser}")
+    suspend fun startChallenge(
+        @Header("Authorization") token: String,
+        @Path("UIDUser") UIDUser: String,
+        @Field("idChallenge") idChallenge: String
+    ): BasicResponse
+
 }

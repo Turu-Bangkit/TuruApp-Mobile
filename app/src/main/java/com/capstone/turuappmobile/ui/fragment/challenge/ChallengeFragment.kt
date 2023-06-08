@@ -74,7 +74,9 @@ class ChallengeFragment : Fragment() {
 
     private fun setAllChallengeAdapter(listChallenge: List<DataItem>){
         val adapter = ChallengeSleepAdapter(listChallenge, requireActivity()){
-            startActivity(Intent(requireActivity(), DetailChallengeActivity::class.java))
+            val intent = Intent(requireActivity(), DetailChallengeActivity::class.java)
+            intent.putExtra(DetailChallengeActivity.CHALLENGE_ID, it.id)
+            startActivity(intent)
         }
         binding.rvChallengeList.layoutManager = GridLayoutManager(requireActivity(), 2)
         binding.rvChallengeList.setHasFixedSize(true)

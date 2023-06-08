@@ -60,7 +60,7 @@
                 app:layout_constraintStart_toStartOf="@+id/namaChallengeTxt"
                 app:layout_constraintTop_toBottomOf="@+id/namaChallengeTxt"
                 app:srcCompat="@drawable/icon_points"
-                app:tint="@color/blue_400" />
+                app:tint="@color/yellow_100" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

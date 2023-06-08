@@ -25,4 +25,6 @@
     <color name="green_600">#D5FCEF</color>
     <color name="green_100">#335F6A</color>
     <color name="green_150">#96C8CD</color>
+    <color name="yellow_100">#EDC954</color>
+    <color name="text_shadow">#7F000000</color>
 </resources>

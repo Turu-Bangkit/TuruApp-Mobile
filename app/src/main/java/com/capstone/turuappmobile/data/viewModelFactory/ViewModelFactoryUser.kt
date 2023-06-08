@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.turuappmobile.data.repository.UsersRepository
 import com.capstone.turuappmobile.di.Injection
+import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeViewModel
 import com.capstone.turuappmobile.ui.activity.login.LoginViewModel
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepActivityViewModel
 import com.capstone.turuappmobile.ui.fragment.challenge.ChallengeFragmentViewModel
@@ -34,6 +35,8 @@ class ViewModelFactoryUser(
             return ProfileViewModel(usersRepository) as T
         }else if (modelClass.isAssignableFrom(ChallengeFragmentViewModel::class.java)) {
             return ChallengeFragmentViewModel(usersRepository) as T
+        }else if (modelClass.isAssignableFrom(DetailChallengeViewModel::class.java)) {
+            return DetailChallengeViewModel(usersRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

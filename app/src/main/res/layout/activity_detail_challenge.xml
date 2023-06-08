@@ -7,12 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.detailChallenge.DetailChallengeActivity">
 
+
     <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="wrap_content"
+        android:id="@+id/imageChallengeDetail"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/profile_background"
+        android:background="@color/blue_100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +29,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+        app:layout_constraintTop_toBottomOf="@+id/imageChallengeDetail" />
 
     <ImageView
         android:id="@+id/imageView13"
@@ -39,7 +40,7 @@
         app:layout_constraintEnd_toStartOf="@+id/pointsTxtDetail"
         app:layout_constraintTop_toTopOf="@+id/challengeNameTxtDetail"
         app:srcCompat="@drawable/icon_points"
-        app:tint="@color/blue_500" />
+        app:tint="@color/yellow_100" />
 
     <TextView
         android:id="@+id/pointsTxtDetail"
@@ -55,7 +56,7 @@
         android:id="@+id/cardView6"
         android:layout_width="100dp"
         android:layout_height="36dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/blue_100"
         app:cardCornerRadius="16dp"
         app:layout_constraintStart_toStartOf="@+id/challengeNameTxtDetail"
@@ -71,9 +72,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 app:srcCompat="@drawable/calendar_icon"
-                app:tint="@color/blue_500" />
+                app:tint="@color/green_200" />
 
             <TextView
+                android:id="@+id/streak_days_detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -91,6 +93,7 @@
         android:layout_marginStart="8dp"
         android:backgroundTint="@color/blue_100"
         app:cardCornerRadius="16dp"
+
         app:layout_constraintBottom_toBottomOf="@+id/cardView6"
         app:layout_constraintStart_toEndOf="@+id/cardView6"
         app:layout_constraintTop_toTopOf="@+id/cardView6">
@@ -108,6 +111,7 @@
                 app:tint="@color/blue_500" />
 
             <TextView
+                android:id="@+id/range_hour_detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -148,14 +152,15 @@
         android:id="@+id/cardView8"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
         android:backgroundTint="@color/blue_100"
         app:cardCornerRadius="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/btnStartChallenge"
         app:layout_constraintEnd_toEndOf="@+id/pointsTxtDetail"
         app:layout_constraintStart_toStartOf="@+id/challengeNameTxtDetail"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintVertical_bias="1">
 
 
         <ScrollView
@@ -173,9 +178,31 @@
 
     </androidx.cardview.widget.CardView>
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayoutDetailChallenge"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView8"
+        app:layout_constraintEnd_toEndOf="@+id/pointsTxtDetail"
+        app:layout_constraintStart_toStartOf="@+id/challengeNameTxtDetail"
+        app:layout_constraintTop_toTopOf="@+id/challengeNameTxtDetail"
+        android:translationZ="2dp"
+        app:shimmer_base_alpha="1.0"
+        app:shimmer_direction="left_to_right"
+        app:shimmer_duration="1000"
+        app:shimmer_highlight_alpha="1.0">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/detail_challenge_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnStartChallenge"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
