@@ -148,7 +148,7 @@ class HistorySleepAnalysistFragment : Fragment() {
                         binding.sleepQualityValueTxt.text =
                             requireActivity().resources.getString(
                                 R.string.result_quality,
-                                result.toString()
+                                result.toInt()
                             )
                         binding.sleepQualityStatusTxt.text = qualityCondition(result)
                         sleepViewModel.insertSleepQuality(SleepQualityEntity(1, result, userUID))
@@ -168,59 +168,66 @@ class HistorySleepAnalysistFragment : Fragment() {
 
                         binding.averageSleepQualityTxt.text = requireActivity().resources.getString(
                             R.string.result_quality,
-                            sleepQuality.average().toInt().toString()
+                            sleepQuality.average().toInt()
                         )
+
+
+                        binding.lineChartGradient.apply {
+
+                            xAxis.valueFormatter = IndexAxisValueFormatter()
+                            xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+                            axisLeft.isEnabled = true
+                            axisLeft.axisMinimum = 0f
+                            axisLeft.granularity = 25f
+                            axisLeft.axisMinimum = 0f
+                            axisLeft.axisMaximum = 100f
+                            axisLeft.valueFormatter = object : ValueFormatter() {
+                                override fun getFormattedValue(value: Float): String {
+                                    return when {
+                                        value < 20f -> "Very Bad"
+                                        value < 40f -> "Bad"
+                                        value < 60f -> "Medium"
+                                        value < 80f -> "Good"
+                                        else -> "Very Good"
+                                    }
+                                }
+                            }
+                            axisLeft.textColor = requireActivity().getColor(R.color.white_100)
+                            axisRight.isEnabled = false
+
+                            description.isEnabled = false
+                            legend.isEnabled = false
+
+
+
+                            val confidenceEntries = ArrayList<Entry>()
+                            sleepQuality.forEach {
+                                Log.d("confidenceEntries", "in")
+                                confidenceEntries.add(Entry(sleepQuality.indexOf(it).toFloat(), it))
+                            }
+
+
+
+                            val arrayHistoryDataSet = LineDataSet(confidenceEntries, "History")
+                            arrayHistoryDataSet.setDrawFilled(true)
+                            arrayHistoryDataSet.fillDrawable =
+                                ContextCompat.getDrawable(requireActivity(), R.drawable.background_gradient_chart)
+                            arrayHistoryDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+                            arrayHistoryDataSet.cubicIntensity =
+                                0.2f
+
+                            val lineData = LineData(arrayHistoryDataSet)
+                            lineData.setDrawValues(true)
+                            lineData.setValueTextColor(requireActivity().getColor(R.color.white_100))
+                            data = lineData
+                            invalidate()
+                        }
+
                     }
                 }
         }
 
-        binding.lineChartGradient.apply {
-
-            xAxis.valueFormatter = IndexAxisValueFormatter()
-            xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-            axisLeft.isEnabled = true
-            axisLeft.axisMinimum = 0f
-            axisLeft.granularity = 25f
-            axisLeft.axisMinimum = 0f
-            axisLeft.axisMaximum = 100f
-            axisLeft.valueFormatter = object : ValueFormatter() {
-                override fun getFormattedValue(value: Float): String {
-                    return when {
-                        value < 20f -> "Very Bad"
-                        value < 40f -> "Bad"
-                        value < 60f -> "Medium"
-                        value < 80f -> "Good"
-                        else -> "Very Good"
-                    }
-                }
-            }
-            axisLeft.textColor = requireActivity().getColor(R.color.white_100)
-            axisRight.isEnabled = false
-
-            description.isEnabled = false
-            legend.isEnabled = false
-
-
-
-            val confidenceEntries = ArrayList<Entry>()
-            sleepQuality.forEach {
-                confidenceEntries.add(Entry(sleepQuality.indexOf(it).toFloat(), it))
-            }
-
-            val arrayHistoryDataSet = LineDataSet(confidenceEntries, "History")
-            arrayHistoryDataSet.setDrawFilled(true)
-            arrayHistoryDataSet.fillDrawable =
-                ContextCompat.getDrawable(requireActivity(), R.drawable.background_gradient_chart)
-            arrayHistoryDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-            arrayHistoryDataSet.cubicIntensity =
-                0.2f
-
-            val lineData = LineData(arrayHistoryDataSet)
-            lineData.setDrawValues(true)
-            lineData.setValueTextColor(requireActivity().getColor(R.color.white_100))
-            data = lineData
-        }
 
 
     }

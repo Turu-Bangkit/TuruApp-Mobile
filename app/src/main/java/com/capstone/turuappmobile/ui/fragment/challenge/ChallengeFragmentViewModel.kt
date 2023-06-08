@@ -29,7 +29,6 @@ class ChallengeFragmentViewModel (private val repository: UsersRepository) : Vie
     }
 
     fun allChallenge(token: String) = viewModelScope.launch {
-        delay(5000)
         callAllChallenge(token)
     }
 

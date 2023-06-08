@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -17,6 +16,9 @@
         android:theme="@style/Theme.TuruAppMobile"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.activity.detailChallenge.DetailChallengeActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.detailHistorySleep.DetailHistoryActivity"
             android:exported="false" />

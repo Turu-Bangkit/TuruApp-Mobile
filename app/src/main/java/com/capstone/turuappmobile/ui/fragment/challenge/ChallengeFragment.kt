@@ -1,5 +1,6 @@
 package com.capstone.turuappmobile.ui.fragment.challenge
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentChallengeBinding
 import com.capstone.turuappmobile.ui.fragment.home.HomeFragmentViewModel
 import com.capstone.turuappmobile.data.repository.Result
+import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeActivity
 import com.capstone.turuappmobile.ui.animation.ShimmerAnimation
 
 class ChallengeFragment : Fragment() {
@@ -72,7 +74,7 @@ class ChallengeFragment : Fragment() {
 
     private fun setAllChallengeAdapter(listChallenge: List<DataItem>){
         val adapter = ChallengeSleepAdapter(listChallenge, requireActivity()){
-            toastMaker(it.name)
+            startActivity(Intent(requireActivity(), DetailChallengeActivity::class.java))
         }
         binding.rvChallengeList.layoutManager = GridLayoutManager(requireActivity(), 2)
         binding.rvChallengeList.setHasFixedSize(true)

@@ -74,18 +74,15 @@ class HomeFragment : Fragment() {
         }
 
         homeFragmentViewModel.getUserSession.observe(viewLifecycleOwner) { preferencesModel ->
-            Log.d(
-                "Testing get UID and Token",
-                "UID: ${preferencesModel.UID} Token: ${preferencesModel.jwtToken}"
-            )
+
 
             sleepViewModel.allSleepQuality(preferencesModel.UID).observe(viewLifecycleOwner) {
-                var sleepQuality = ""
-                var textSize = 0F
+                val sleepQuality: String
+                val textSize: Float
                 if (it.isNotEmpty()) {
                     sleepQuality = requireActivity().getString(
                         R.string.result_quality,
-                        it.last().sleepQuality.toString()
+                        it.last().sleepQuality.toInt()
                     )
                     textSize = 26F
                 } else {
