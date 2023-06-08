@@ -53,6 +53,8 @@ class SleepViewModel (private val repository: SleepRepository) : ViewModel() {
     fun insertSleepQuality (sleepQualityEntity: SleepQualityEntity) = viewModelScope.launch {
         repository.insertSleepQuality(sleepQualityEntity)
     }
+    fun checkChallengePass(newStartRules: Int, newEndRules: Int, userUID: String) : LiveData<Int> =
+        repository.checkChallengePass(newStartRules, newEndRules, userUID).asLiveData()
 
 
 

@@ -28,5 +28,7 @@ interface SleepTimeDao {
     @Query("UPDATE sleep_time_table SET real_start_time = :realStartTime WHERE start_time = (SELECT MAX(start_time) FROM sleep_time_table) AND real_start_time IS NULL")
     suspend fun updateRealStartTime(realStartTime: Int)
 
+    @Query("SELECT COUNT (*) FROM sleep_time_table WHERE real_start_time <= :newStartRules AND end_time >= :newEndRules AND id = :userUID")
+    fun checkChallengePass(newStartRules: Int, newEndRules: Int, userUID: String): Flow<Int>
 
 }

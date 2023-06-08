@@ -35,6 +35,12 @@ class UsersRepository(
     suspend fun startChallenge(token: String, UIDUser: String, idChallenge: String) =
         userApi.startChallenge(token, UIDUser, idChallenge)
 
+    suspend fun getStatusChallenge(token: String, UIDUser: String) =
+        userApi.getStatusChallenge(token, UIDUser)
+
+    suspend fun updateLevelChallenge(token: String, UIDUser: String, level: Int) =
+        userApi.updateLevelChallenge(token, UIDUser, level)
+
     companion object {
         @Volatile
         private var instance: UsersRepository? = null

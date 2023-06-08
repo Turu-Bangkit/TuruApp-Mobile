@@ -52,4 +52,17 @@ interface ApiService {
         @Field("idChallenge") idChallenge: String
     ): BasicResponse
 
+    @GET("statusChallenge/{UIDUser}")
+    suspend fun getStatusChallenge(
+        @Header("Authorization") token: String,
+        @Path("UIDUser") UIDUser: String,
+    ): StatusChallengeResponse
+
+    @POST("updateLevel/{UIDUser}")
+    suspend fun updateLevelChallenge(
+        @Header("Authorization") token: String,
+        @Path("UIDUser") UIDUser: String,
+        @Field("Level") level: Int
+    ): BasicResponse
+
 }

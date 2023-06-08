@@ -71,6 +71,9 @@ class SleepRepository(
     fun allSleepQualityLimit(userUID: String): Flow<List<SleepQualityEntity>> =
         sleepQualityDao.getQualityLimit(userUID)
 
+    fun checkChallengePass(newStartRules: Int, newEndRules: Int, userUID: String): Flow<Int> =
+        sleepTimeDao.checkChallengePass(newStartRules, newEndRules, userUID)
+
     companion object {
         @Volatile
         private var instance: SleepRepository? = null

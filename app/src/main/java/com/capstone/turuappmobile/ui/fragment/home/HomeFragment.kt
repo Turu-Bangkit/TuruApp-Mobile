@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import com.capstone.turuappmobile.R
+import com.capstone.turuappmobile.data.api.model.DataStatusChallenge
+import com.capstone.turuappmobile.data.api.model.StatusChallengeResponse
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentHomeBinding
@@ -39,6 +41,9 @@ class HomeFragment : Fragment() {
     private val sleepViewModel by viewModels<SleepViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
+
+    private var UIDUser = ""
+    private var JWTtoken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,7 +80,8 @@ class HomeFragment : Fragment() {
 
         homeFragmentViewModel.getUserSession.observe(viewLifecycleOwner) { preferencesModel ->
 
-
+            UIDUser = preferencesModel.UID
+            JWTtoken = preferencesModel.jwtToken
             sleepViewModel.allSleepQuality(preferencesModel.UID).observe(viewLifecycleOwner) {
                 val sleepQuality: String
                 val textSize: Float
@@ -97,6 +103,7 @@ class HomeFragment : Fragment() {
 
             }
             homeFragmentViewModel.checkPoints(preferencesModel.jwtToken, preferencesModel.UID)
+            homeFragmentViewModel.statusChallenge(preferencesModel.jwtToken, preferencesModel.UID)
 
         }
 
@@ -116,7 +123,49 @@ class HomeFragment : Fragment() {
             }
         }
 
+        homeFragmentViewModel.checkStatusChallenge.observe(viewLifecycleOwner){
+            when (it) {
+                is Result.Loading -> {
+                    showLoading(true)
+                }
+                is Result.Success -> {
+                    showLoading(false)
+                    startCheckChallenge(it.data.data)
+                }
+                is Result.Error -> {
+                    showLoading(false)
+                    toastMaker(it.error)
+                }
+            }
+        }
 
+
+    }
+
+    private fun startCheckChallenge(data: DataStatusChallenge) {
+        val levelUser = data.levelUser
+        if(levelUser != 0){
+            val timeNowInEpoch = Instant.now().epochSecond.toInt()
+            val newStartRules = data.startRulesTime * levelUser
+            val newEndRules = data.endRulesTime * levelUser
+            var newLevelUser = 0
+
+            if(timeNowInEpoch >= newEndRules){
+                sleepViewModel.checkChallengePass(newStartRules, newEndRules, UIDUser).observe(viewLifecycleOwner){
+                    if(it > 0) newLevelUser++
+                    homeFragmentViewModel.updateLevel(JWTtoken, UIDUser, newLevelUser)
+                }
+            }
+
+            updateUIChallenge(newLevelUser)
+
+        }else {
+            // Update UI No data
+        }
+    }
+
+    private fun updateUIChallenge(newLevelUser: Int) {
+        TODO("Not yet implemented")
     }
 
     private fun showLoading(isLoading: Boolean) {
