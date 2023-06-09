@@ -11,7 +11,7 @@ private const val DATABASE_NAME = "sleep_segments_database"
 
 @Database(
     entities = [SleepClassifyEventEntity::class , SleepTimeEntity::class, SleepQualityEntity::class],
-    version = 2,
+    version = 4,
     exportSchema = false
 )
 abstract class SleepDatabase : RoomDatabase() {

@@ -82,6 +82,7 @@ class HomeFragment : Fragment() {
 
             UIDUser = preferencesModel.UID
             JWTtoken = preferencesModel.jwtToken
+            Log.d("UID", UIDUser)
             sleepViewModel.allSleepQuality(preferencesModel.UID).observe(viewLifecycleOwner) {
                 val sleepQuality: String
                 val textSize: Float
@@ -165,7 +166,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateUIChallenge(newLevelUser: Int) {
-        TODO("Not yet implemented")
+        if(newLevelUser > 0){
+//            val progress = 100 /
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

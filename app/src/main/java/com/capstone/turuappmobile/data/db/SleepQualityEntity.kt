@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "sleep_quality_table")
 data class SleepQualityEntity(
-    @PrimaryKey
+    @PrimaryKey (autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: Int?,
     @ColumnInfo(name = "sleep_quality")
     val sleepQuality: Float,
     @ColumnInfo(name = "id_user")
