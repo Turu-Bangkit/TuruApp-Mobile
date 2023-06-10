@@ -22,6 +22,7 @@ import com.capstone.turuappmobile.databinding.FragmentHomeBinding
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
 import com.capstone.turuappmobile.receiver.SleepReceiver
+import com.capstone.turuappmobile.ui.activity.catalog.CatalogActivity
 import com.capstone.turuappmobile.ui.activity.detailChallengeOnProgress.DetailChallengeOnProgressActivity
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepActivity
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
@@ -144,7 +145,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnToChallengeOnProgress.setOnClickListener {
-            startActivity(Intent(requireActivity(), DetailChallengeOnProgressActivity::class.java))
+            startActivity(Intent(requireActivity(), CatalogActivity::class.java))
         }
 
     }
@@ -168,7 +169,7 @@ class HomeFragment : Fragment() {
             updateUIChallenge(newLevelUser, data.maxLevel)
 
         } else {
-            // Update UI No data
+            updateUIChallenge(0, 0)
 
         }
     }

@@ -39,7 +39,6 @@
     </style>
 
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
-        <item name="android:fontFamily">@font/poppins</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
         <item name="titleTextAppearance">@style/TextAppearance.App.TitleLarge</item>
         <item name="subtitleTextAppearance">@style/TextAppearance.App.TitleMedium</item>
@@ -50,4 +49,11 @@
         <item name="colorOnSurface">@color/white</item>
         <item name="android:fontFamily">@font/poppins</item>
     </style>
+    <style name="Theme.TuruAppMobile.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.TuruAppMobile.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.TuruAppMobile.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

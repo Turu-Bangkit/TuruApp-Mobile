@@ -24,6 +24,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
+import com.capstone.turuappmobile.ui.activity.onBoarding.OnBoardingActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -124,7 +125,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, OnBoardingActivity::class.java))
             finish()
         }
     }

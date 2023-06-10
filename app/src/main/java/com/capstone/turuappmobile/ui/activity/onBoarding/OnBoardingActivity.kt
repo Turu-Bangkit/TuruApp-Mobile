@@ -1,33 +1,39 @@
-package com.capstone.turuappmobile.ui.fragment.historyAnalysis
+package com.capstone.turuappmobile.ui.activity.onBoarding
 
+import android.content.Intent
 import android.content.res.AssetFileDescriptor
 import android.content.res.AssetManager
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.viewModels
+import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepQualityEntity
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
-import com.capstone.turuappmobile.databinding.FragmentHistorySleepAnalysistBinding
+import com.capstone.turuappmobile.databinding.ActivityOnBoardingBinding
+import com.capstone.turuappmobile.ui.activity.home.HomeActivity
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
-import com.capstone.turuappmobile.ui.fragment.historyList.HistorySleepListViewModel
-import com.capstone.turuappmobile.utils.*
+import com.capstone.turuappmobile.ui.fragment.historyAnalysis.HistorySleepAnalysistViewModel
+import com.capstone.turuappmobile.utils.calculateCoefficientOfVariation
+import com.capstone.turuappmobile.utils.convertEpochToHour
+import com.capstone.turuappmobile.utils.convertEpochToJustDateTime
+import com.capstone.turuappmobile.utils.convertTimeStringToSeconds
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.ByteBuffer
@@ -36,11 +42,12 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.time.Instant
 
+class OnBoardingActivity : AppCompatActivity() {
 
-class HistorySleepAnalysistFragment : Fragment() {
 
-    private var _binding: FragmentHistorySleepAnalysistBinding? = null
-    private val binding get() = _binding!!
+
+    private lateinit var binding: ActivityOnBoardingBinding
+
     private var historySleep = listOf<SleepTimeEntity>()
     private var startTimeList = listOf<Float>()
     private var endTimeList = listOf<Float>()
@@ -64,36 +71,24 @@ class HistorySleepAnalysistFragment : Fragment() {
 
     private var result = 0F
 
-    private var confidenceQuality = mutableListOf<Entry>()
-
     private val sleepViewModel by viewModels<SleepViewModel> {
-        ViewModelFactory.getInstance(requireActivity())
+        ViewModelFactory.getInstance(this)
     }
 
     private val historySleepAnalysistViewModel by viewModels<HistorySleepAnalysistViewModel> {
-        ViewModelFactoryUser.getInstance(requireActivity())
+        ViewModelFactoryUser.getInstance(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+        binding = ActivityOnBoardingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        _binding = FragmentHistorySleepAnalysistBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.lineChartGradient.invalidate()
-
-        historySleepAnalysistViewModel.getUserSession.observe(viewLifecycleOwner) { User ->
+        historySleepAnalysistViewModel.getUserSession.observe(this) { User ->
             userUID = User.UID
             sleepViewModel.allSleepHistoryByUser(userUID, "")
-                .observe(viewLifecycleOwner) { sleepHistory ->
+                .observe(this) { sleepHistory ->
                     historySleep = sleepHistory.filter {
                         it.endTime != null && it.endTime - it.startTime > 4000 && it.realStartTime != null
                     }
@@ -132,7 +127,7 @@ class HistorySleepAnalysistFragment : Fragment() {
                             regularity = 80F
                         }
 
-                        val assetManager: AssetManager = requireContext().assets
+                        val assetManager: AssetManager = this.assets
                         val interpreter: Interpreter = loadModel(assetManager)
                         // Dummy input, not normalized yet. Click button to see the prediction
                         val features = featureNormalization(
@@ -144,29 +139,16 @@ class HistorySleepAnalysistFragment : Fragment() {
                         ) // Quality = 77
                         result =
                             targetNormalizationInverse(performInference(interpreter, features))
-                        val instant = Instant.now()
 
-                        binding.lastCheckedTxt.text = requireActivity().resources.getString(
-                            R.string.last_checked,
-                            convertEpochToJustDateTime(instant.epochSecond.toInt())
-                        )
-                        binding.sleepQualityValueTxt.text =
-                            requireActivity().resources.getString(
-                                R.string.result_quality,
-                                result.toInt()
-                            )
-                        binding.sleepQualityStatusTxt.text = qualityCondition(result)
-
-
+                        Toast.makeText(this, "Quality: $result", Toast.LENGTH_SHORT).show()
 
                     } else {
-                        // TODO: Show message that there is no history
+                        updateUi()
                     }
 
                     sleepViewModel.allSleepQuality(User.UID)
-                        .observe(viewLifecycleOwner) { qualityEntities ->
+                        .observe(this) { qualityEntities ->
                             if (qualityEntities.isNotEmpty()) {
-                                showEmptyDataLayout(false)
                                 qualityEntities.forEach {
 
                                     sleepQuality.add(it.sleepQuality)
@@ -183,73 +165,6 @@ class HistorySleepAnalysistFragment : Fragment() {
                                     sleepQuality.add(result)
                                 }
 
-
-
-                                binding.averageSleepQualityTxt.text =
-                                    requireActivity().resources.getString(
-                                        R.string.result_quality,
-                                        sleepQuality.average().toInt()
-                                    )
-
-
-                                binding.lineChartGradient.apply {
-
-                                    xAxis.valueFormatter = IndexAxisValueFormatter()
-                                    xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                                    axisLeft.isEnabled = true
-                                    axisLeft.axisMinimum = 0f
-                                    axisLeft.granularity = 25f
-                                    axisLeft.axisMinimum = 0f
-                                    axisLeft.axisMaximum = 100f
-                                    axisLeft.valueFormatter = object : ValueFormatter() {
-                                        override fun getFormattedValue(value: Float): String {
-                                            return when {
-                                                value < 20f -> "Very Bad"
-                                                value < 40f -> "Bad"
-                                                value < 60f -> "Medium"
-                                                value < 80f -> "Good"
-                                                else -> "Very Good"
-                                            }
-                                        }
-                                    }
-                                    axisLeft.textColor =
-                                        requireActivity().getColor(R.color.white_100)
-                                    axisRight.isEnabled = false
-
-                                    description.isEnabled = false
-                                    legend.isEnabled = false
-
-
-                                    sleepQuality.forEach {
-                                        Log.d("confidenceEntries", "in")
-                                        confidenceQuality.add(
-                                            Entry(
-                                                sleepQuality.indexOf(it).toFloat(), it
-                                            )
-                                        )
-                                    }
-
-
-                                    val arrayHistoryDataSet =
-                                        LineDataSet(confidenceQuality, "History")
-                                    arrayHistoryDataSet.setDrawFilled(true)
-                                    arrayHistoryDataSet.fillDrawable =
-                                        ContextCompat.getDrawable(
-                                            requireActivity(),
-                                            R.drawable.background_gradient_chart
-                                        )
-                                    arrayHistoryDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-                                    arrayHistoryDataSet.cubicIntensity =
-                                        0.2f
-
-                                    val lineData = LineData(arrayHistoryDataSet)
-                                    lineData.setDrawValues(true)
-                                    lineData.setValueTextColor(requireActivity().getColor(R.color.white_100))
-                                    data = lineData
-                                    invalidate()
-                                }
-
                             } else {
                                 if (historySleep.size == 1) {
                                     sleepViewModel.insertSleepQuality(
@@ -261,6 +176,9 @@ class HistorySleepAnalysistFragment : Fragment() {
                                     )
                                 }
                             }
+
+                            updateUi()
+
                         }
 
                 }
@@ -269,6 +187,11 @@ class HistorySleepAnalysistFragment : Fragment() {
         }
 
 
+    }
+
+    private fun updateUi(){
+        startActivity(Intent(this, HomeActivity::class.java))
+        finish()
     }
 
     private fun loadModel(assetManager: AssetManager): Interpreter {
@@ -327,28 +250,4 @@ class HistorySleepAnalysistFragment : Fragment() {
     private fun targetNormalizationInverse(quality: Float): Float {
         return quality * (100 - 7) + 7
     }
-
-    private fun qualityCondition(quality: Float): String {
-        return when {
-            quality < 20f -> "Very Bad"
-            quality < 40f -> "Bad"
-            quality < 60f -> "Medium"
-            quality < 80f -> "Good"
-            else -> "Very Good"
-        }
-    }
-
-    private fun showEmptyDataLayout(isLoading: Boolean) {
-        binding.layoutLoadingEmpty.layoutEmpty.visibility =
-            if (isLoading) View.VISIBLE else View.GONE
-    }
-
-     override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-
-
-
 }
