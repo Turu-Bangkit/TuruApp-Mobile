@@ -39,13 +39,15 @@
     </style>
 
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:fontFamily">@font/poppins</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
         <item name="titleTextAppearance">@style/TextAppearance.App.TitleLarge</item>
         <item name="subtitleTextAppearance">@style/TextAppearance.App.TitleMedium</item>
     </style>
 
     <style name="ThemeOverlay.App.Toolbar" parent="">
-        <item name="colorSurface">@color/blue_100</item>
-        <item name="colorOnSurface">@color/blue_100</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="android:fontFamily">@font/poppins</item>
     </style>
 </resources>

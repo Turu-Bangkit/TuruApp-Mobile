@@ -2,6 +2,7 @@ package com.capstone.turuappmobile.ui.fragment.home
 
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -21,8 +22,10 @@ import com.capstone.turuappmobile.databinding.FragmentHomeBinding
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
 import com.capstone.turuappmobile.receiver.SleepReceiver
+import com.capstone.turuappmobile.ui.activity.detailChallengeOnProgress.DetailChallengeOnProgressActivity
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepActivity
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
+import com.capstone.turuappmobile.utils.onedayinseconds
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.Instant
@@ -124,7 +127,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        homeFragmentViewModel.checkStatusChallenge.observe(viewLifecycleOwner){
+        homeFragmentViewModel.checkStatusChallenge.observe(viewLifecycleOwner) {
             when (it) {
                 is Result.Loading -> {
                     showLoading(true)
@@ -140,34 +143,45 @@ class HomeFragment : Fragment() {
             }
         }
 
+        binding.btnToChallengeOnProgress.setOnClickListener {
+            startActivity(Intent(requireActivity(), DetailChallengeOnProgressActivity::class.java))
+        }
 
     }
 
     private fun startCheckChallenge(data: DataStatusChallenge) {
         val levelUser = data.levelUser
-        if(levelUser != 0){
+        if (levelUser != 0) {
             val timeNowInEpoch = Instant.now().epochSecond.toInt()
-            val newStartRules = data.startRulesTime * levelUser
-            val newEndRules = data.endRulesTime * levelUser
+            val newStartRules = data.startRulesTime + (levelUser - 1) * onedayinseconds
+            val newEndRules = data.endRulesTime + (levelUser - 1) * onedayinseconds
             var newLevelUser = 0
 
-            if(timeNowInEpoch >= newEndRules){
-                sleepViewModel.checkChallengePass(newStartRules, newEndRules, UIDUser).observe(viewLifecycleOwner){
-                    if(it > 0) newLevelUser++
-                    homeFragmentViewModel.updateLevel(JWTtoken, UIDUser, newLevelUser)
-                }
+            if (timeNowInEpoch >= newEndRules) {
+                sleepViewModel.checkChallengePass(newStartRules, newEndRules, UIDUser)
+                    .observe(viewLifecycleOwner) {
+                        if (it > 0) newLevelUser++
+                        homeFragmentViewModel.updateLevel(JWTtoken, UIDUser, newLevelUser)
+                    }
             }
 
-            updateUIChallenge(newLevelUser)
+            updateUIChallenge(newLevelUser, data.maxLevel)
 
-        }else {
+        } else {
             // Update UI No data
+
         }
     }
 
-    private fun updateUIChallenge(newLevelUser: Int) {
-        if(newLevelUser > 0){
-//            val progress = 100 /
+    private fun updateUIChallenge(newLevelUser: Int, maxLevel: Int) {
+        if (newLevelUser > 0) {
+            binding.constraintLayoutData.visibility = View.VISIBLE
+            binding.constraintLayoutNoData.visibility = View.GONE
+            binding.challengeProgressHome.progress = 100 / maxLevel * newLevelUser
+
+        }else{
+            binding.constraintLayoutData.visibility = View.GONE
+            binding.constraintLayoutNoData.visibility = View.VISIBLE
         }
     }
 

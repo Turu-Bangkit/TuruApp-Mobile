@@ -23,5 +23,11 @@ data class DataStatusChallenge(
 	val endRulesTime: Int,
 
 	@field:SerializedName("level_user")
-	val levelUser: Int
+	val levelUser: Int,
+
+	@field:SerializedName("id_challenge")
+	val idChallenge: String,
+
+	@field:SerializedName("max_level")
+	val maxLevel: Int
 )

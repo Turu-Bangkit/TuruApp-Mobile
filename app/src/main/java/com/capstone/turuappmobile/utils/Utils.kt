@@ -32,6 +32,13 @@ fun convertEpochToHour(epochTime: Int): String {
     return dateTime.format(formatter)
 }
 
+fun convertEpochToHourMinute(epochTime: Int): String {
+    val zoneOffset = ZoneId.systemDefault().rules.getOffset(LocalDateTime.now())
+    val dateTime = LocalDateTime.ofEpochSecond(epochTime.toLong(), 0, zoneOffset)
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+    return dateTime.format(formatter)
+}
+
 fun convertTimeStringToSeconds(timeString: String): Int {
     val timeParts = timeString.split(":")
     val hours = timeParts[0].toInt()
@@ -67,3 +74,5 @@ fun ImageView.loadImage(url: String?) {
         .placeholder(ShimmerAnimation.runShimmerAnimation())
         .into(this)
 }
+
+val onedayinseconds = 86400

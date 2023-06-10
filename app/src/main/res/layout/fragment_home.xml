@@ -105,7 +105,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:visibility="gone" />
-                    />
 
 
 
@@ -193,7 +192,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
-        android:layout_height="148dp"
+        android:layout_height="160dp"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="8dp"
         android:backgroundTint="@color/blue_100"
@@ -202,11 +201,51 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutNoData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/imageView16"
+                android:layout_width="160dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/no_data"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/noDataTxtHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Data"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/imageView16"
+                app:layout_constraintTop_toBottomOf="@id/imageView16"
+                app:layout_constraintEnd_toEndOf="@id/imageView16"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You can start challenge at challenge section"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/imageView16"
+                app:layout_constraintTop_toBottomOf="@id/noDataTxtHome"
+                app:layout_constraintEnd_toEndOf="@id/imageView16"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutData"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/challengeStatus"
+                android:id="@+id/statusOnProgressOdd"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -228,15 +267,15 @@
                 android:layout_marginEnd="16dp"
                 android:progressDrawable="@drawable/custom_progress_bg"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/challengeStatus"
-                app:layout_constraintTop_toBottomOf="@+id/challengeStatus" />
+                app:layout_constraintStart_toStartOf="@+id/statusOnProgressOdd"
+                app:layout_constraintTop_toBottomOf="@+id/statusOnProgressOdd" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btnToChallengeOnProgress"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:text="See Detail"
                 android:textColor="@color/blue_500"
@@ -245,12 +284,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/challenge_progress_home" />
 
             <TextView
-                android:id="@+id/status_level_challenge_home"
+                android:id="@+id/bigStatusLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Level  3"
                 app:layout_constraintEnd_toEndOf="@+id/challenge_progress_home"
-                app:layout_constraintTop_toBottomOf="@+id/challengeStatus" />
+                app:layout_constraintTop_toBottomOf="@+id/statusOnProgressOdd" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

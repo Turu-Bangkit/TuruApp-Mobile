@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="4dp"
+        android:layout_height="150dp"
+
+        android:background="@color/blue_400"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/circle_shape_blue600"
+        android:backgroundTint="@color/blue_400"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
+        app:layout_constraintTop_toTopOf="@+id/view4" />
+
+    <TextView
+        android:id="@+id/dateOnProgressOdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="25 Juni - 26 Juni"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/view4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/hourOnProgressOdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="21:00 - 05:00"
+        app:layout_constraintStart_toStartOf="@+id/dateOnProgressOdd"
+        app:layout_constraintTop_toBottomOf="@+id/dateOnProgressOdd" />
+
+    <TextView
+        android:id="@+id/statusOnProgressOdd"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/circle_shape_green"
+        android:text="Completed"
+        android:textAlignment="center"
+        android:textColor="@color/white_100"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/dateOnProgressOdd"
+        app:layout_constraintTop_toBottomOf="@+id/hourOnProgressOdd" />
+
+    <TextView
+        android:id="@+id/bigOnProgressOdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Day 1"
+        android:textColor="@color/blue_100"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/dateOnProgressEven"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="25 Juni - 26 Juni"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/view4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/hourOnProgressEven"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="21:00 - 05:00"
+        app:layout_constraintEnd_toEndOf="@+id/dateOnProgressEven"
+        app:layout_constraintTop_toBottomOf="@+id/dateOnProgressEven" />
+
+    <TextView
+        android:id="@+id/statusOnProgressEven"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/circle_shape_green"
+        android:text="Completed"
+        android:textAlignment="center"
+        android:textColor="@color/white_100"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/dateOnProgressEven"
+        app:layout_constraintTop_toBottomOf="@+id/hourOnProgressEven" />
+
+    <TextView
+        android:id="@+id/bigOnProgressEven"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Day 1"
+        android:textColor="@color/blue_100"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
