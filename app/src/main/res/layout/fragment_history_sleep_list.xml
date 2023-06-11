@@ -2,8 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingStart="12dp"
-    android:paddingEnd="12dp"
     android:layout_height="match_parent">
 
     <include
@@ -24,9 +22,98 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_100"
+                android:padding="8dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:text="Sleep Quality"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/circularProgressIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:progress="75"
+                    app:indicatorColor="@color/blue_500"
+                    app:indicatorSize="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView13"
+                    app:trackColor="@color/blue_200"
+                    app:trackCornerRadius="4dp"
+                    app:trackThickness="8dp" />
+
+                <TextView
+                    android:id="@+id/circularTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="75%"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/circularProgressIndicator"
+                    app:layout_constraintEnd_toEndOf="@+id/circularProgressIndicator"
+                    app:layout_constraintStart_toStartOf="@+id/circularProgressIndicator"
+                    app:layout_constraintTop_toTopOf="@+id/circularProgressIndicator" />
+
+                <Button
+                    android:id="@+id/btnToDetailAnalysist"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="See History"
+                    android:textColor="@color/blue_500"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/circularProgressIndicator" />
+
+                <ImageView
+                    android:id="@+id/iconSleepHome"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/sleep_history"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/blue_200" />
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/star_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_margin="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+
 
                 <TextView
                     android:layout_width="0dp"
@@ -91,6 +178,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_history_sleep"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

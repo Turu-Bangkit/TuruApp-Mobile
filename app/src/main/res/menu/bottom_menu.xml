@@ -5,7 +5,7 @@
         android:icon="@drawable/home_icon"
         android:title="@string/home"/>
     <item
-        android:id="@+id/historyParentFragment"
+        android:id="@+id/historySleepListFragment"
         android:icon="@drawable/sleep_history"
         android:title="@string/history"/>
 

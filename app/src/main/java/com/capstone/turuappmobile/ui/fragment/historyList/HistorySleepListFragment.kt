@@ -22,6 +22,7 @@ import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentHistorySleepListBinding
+import com.capstone.turuappmobile.ui.activity.detailAnalysist.DetailAnalysistActivity
 import com.capstone.turuappmobile.ui.activity.detailHistorySleep.DetailHistoryActivity
 //import com.capstone.turuappmobile.ui.activity.detailHistorySleep.DetailHistoryActivity
 //import com.capstone.turuappmobile.ui.activity.historySleep.HistorySleepAdapter
@@ -74,6 +75,18 @@ class HistorySleepListFragment : Fragment() {
 
                     setHistoryAdapter(sleepHistoryFilter)
                 }
+
+            sleepViewModel.allSleepQuality(userUID).observe(viewLifecycleOwner){
+                val sleepQuality = it.last().sleepQuality
+                binding.apply {
+                    circularProgressIndicator.progress = sleepQuality.toInt()
+                    circularTxt.text = requireActivity().getString(
+                        R.string.result_quality,
+                        sleepQuality.toInt()
+                    )
+
+                }
+            }
         }
 
         binding.resetBtn.setOnClickListener {
@@ -88,6 +101,10 @@ class HistorySleepListFragment : Fragment() {
 
         binding.filterBtn.setOnClickListener {
             showDatePickerStart(it)
+        }
+
+        binding.btnToDetailAnalysist.setOnClickListener {
+            startActivity(Intent(requireActivity(), DetailAnalysistActivity::class.java))
         }
 
 
