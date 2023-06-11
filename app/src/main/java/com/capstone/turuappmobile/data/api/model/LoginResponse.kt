@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
 
-	@field:SerializedName("tokenjwt")
+	@field:SerializedName("jwtToken")
 	val tokenjwt: String,
 
 	@field:SerializedName("error")
@@ -13,7 +13,7 @@ data class LoginResponse(
 	@field:SerializedName("message")
 	val message: String,
 
-	@field:SerializedName("gambar")
+	@field:SerializedName("picture")
 	val gambar: String,
 
 	@field:SerializedName("email")

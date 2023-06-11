@@ -19,10 +19,10 @@ data class Data(
 	@field:SerializedName("start_time")
 	val startTime: String,
 
-	@field:SerializedName("img")
+	@field:SerializedName("image")
 	val img: String,
 
-	@field:SerializedName("how many days")
+	@field:SerializedName("days")
 	val howManyDays: Int,
 
 	@field:SerializedName("name")

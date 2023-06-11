@@ -107,8 +107,9 @@ class HomeFragment : Fragment() {
                 }
 
             }
-            homeFragmentViewModel.checkPoints(preferencesModel.jwtToken, preferencesModel.UID)
-            homeFragmentViewModel.statusChallenge(preferencesModel.jwtToken, preferencesModel.UID)
+            homeFragmentViewModel.statusChallenge(JWTtoken, preferencesModel.UID)
+            homeFragmentViewModel.checkPoints(JWTtoken, preferencesModel.UID)
+
 
         }
 
@@ -145,32 +146,35 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnToChallengeOnProgress.setOnClickListener {
-            startActivity(Intent(requireActivity(), CatalogActivity::class.java))
+            startActivity(Intent(requireActivity(), DetailChallengeOnProgressActivity::class.java))
         }
 
     }
 
     private fun startCheckChallenge(data: DataStatusChallenge) {
-        val levelUser = data.levelUser
-        if (levelUser != 0) {
+        var levelUser = data.levelUser
+        if (levelUser != null) {
             val timeNowInEpoch = Instant.now().epochSecond.toInt()
-            val newStartRules = data.startRulesTime + (levelUser - 1) * onedayinseconds
-            val newEndRules = data.endRulesTime + (levelUser - 1) * onedayinseconds
-            var newLevelUser = 0
+            val newStartRules = data.startRulesTime?.plus(
+                (levelUser.minus(1)).times(
+                    onedayinseconds
+                ) )
+            val newEndRules = data.endRulesTime?.plus((levelUser.minus(1)).times(onedayinseconds) )
 
-            if (timeNowInEpoch >= newEndRules) {
-                sleepViewModel.checkChallengePass(newStartRules, newEndRules, UIDUser)
-                    .observe(viewLifecycleOwner) {
-                        if (it > 0) newLevelUser++
-                        homeFragmentViewModel.updateLevel(JWTtoken, UIDUser, newLevelUser)
-                    }
+            if (timeNowInEpoch >= newEndRules!!) {
+                if (newStartRules != null) {
+                    sleepViewModel.checkChallengePass(newStartRules, newEndRules, UIDUser)
+                        .observe(viewLifecycleOwner) {
+                            if (it > 0) levelUser++
+                            homeFragmentViewModel.updateLevel(JWTtoken, UIDUser, levelUser)
+                        }
+                }
             }
 
-            updateUIChallenge(newLevelUser, data.maxLevel)
+            data.maxLevel?.let { updateUIChallenge(levelUser, it) }
 
         } else {
             updateUIChallenge(0, 0)
-
         }
     }
 
@@ -179,6 +183,10 @@ class HomeFragment : Fragment() {
             binding.constraintLayoutData.visibility = View.VISIBLE
             binding.constraintLayoutNoData.visibility = View.GONE
             binding.challengeProgressHome.progress = 100 / maxLevel * newLevelUser
+            binding.bigStatusLevel.text = requireActivity().getString(
+                R.string.current_day,
+                newLevelUser
+            )
 
         }else{
             binding.constraintLayoutData.visibility = View.GONE

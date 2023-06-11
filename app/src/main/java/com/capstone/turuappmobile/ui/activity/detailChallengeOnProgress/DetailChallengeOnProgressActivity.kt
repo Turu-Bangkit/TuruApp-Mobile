@@ -57,10 +57,12 @@ class DetailChallengeOnProgressActivity : AppCompatActivity() {
                 is Result.Success -> {
                     showLoading(false)
                     statusChallengeResponse = it.data
-                    detailChallengeOnProgressViewModel.detailChallenge(
-                        token,
-                        statusChallengeResponse!!.data.idChallenge
-                    )
+                    statusChallengeResponse!!.data.idChallenge?.let { it1 ->
+                        detailChallengeOnProgressViewModel.detailChallenge(
+                            token,
+                            it1
+                        )
+                    }
                 }
                 is Result.Error -> {
                     showLoading(false)
@@ -96,20 +98,28 @@ class DetailChallengeOnProgressActivity : AppCompatActivity() {
             bigDayProgress.text =
                 resources.getString(R.string.current_day, statusChallengeResponse!!.data.levelUser)
             challengeDetailProgress.progress =
-                100 / statusChallengeResponse!!.data.maxLevel * statusChallengeResponse!!.data.levelUser
+                100 / statusChallengeResponse!!.data.maxLevel!! * statusChallengeResponse!!.data.levelUser!!
         }
 
         val listOnProgress = mutableListOf<OnProgress>()
-        for (i in 1..statusChallengeResponse!!.data.levelUser) {
+        for (i in 1..statusChallengeResponse!!.data.levelUser!!) {
             val dateStart =
-                statusChallengeResponse!!.data.startRulesTime + (i - 1) * onedayinseconds
-            val dateEnd = statusChallengeResponse!!.data.endRulesTime + (i - 1) * onedayinseconds
+                statusChallengeResponse!!.data.startRulesTime?.plus((i - 1) * onedayinseconds)
+            val dateEnd = statusChallengeResponse!!.data.endRulesTime?.plus((i - 1) * onedayinseconds)
             val dateOnProgress =
-                "${convertEpochToJustDateTime(dateStart)}-${convertEpochToJustDateTime(dateEnd)}"
+                "${dateStart?.let { convertEpochToJustDateTime(it) }}-${dateEnd?.let {
+                    convertEpochToJustDateTime(
+                        it
+                    )
+                }}"
             val hourOnProgress =
-                "${convertEpochToHourMinute(dateStart)}-${convertEpochToHourMinute(dateEnd)}"
+                "${dateStart?.let { convertEpochToHourMinute(it) }}-${dateEnd?.let {
+                    convertEpochToHourMinute(
+                        it
+                    )
+                }}"
             val statusOnProgress =
-                if (i < statusChallengeResponse!!.data.levelUser) 0 else if (i == statusChallengeResponse!!.data.levelUser) 1 else 2
+                if (i < statusChallengeResponse!!.data.levelUser!!) 0 else if (i == statusChallengeResponse!!.data.levelUser) 1 else 2
 
             listOnProgress.add(OnProgress(dateOnProgress, hourOnProgress, statusOnProgress, i))
         }

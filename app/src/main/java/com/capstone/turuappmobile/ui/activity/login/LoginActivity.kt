@@ -32,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
     private var firebaseUser: FirebaseUser? = null
+    private var id = ""
 
     private val loginViewModel by viewModels<LoginViewModel> {
         ViewModelFactoryUser.getInstance(this)
@@ -63,8 +64,8 @@ class LoginActivity : AppCompatActivity() {
                 is Result.Success -> {
                     loginViewModel.updateUserSession(
                         UserPreferencesModel(
-                            firebaseUser!!.uid,
-                            it.data.tokenjwt
+                            id,
+                            "Bearer ${it.data.tokenjwt}"
                         )
                     )
                     showLoading(false)
@@ -97,6 +98,7 @@ class LoginActivity : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.idToken)
+                id = account.id!!
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately

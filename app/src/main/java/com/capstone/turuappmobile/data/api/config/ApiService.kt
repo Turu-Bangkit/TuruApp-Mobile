@@ -8,7 +8,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("login")
     suspend fun login(
-    @Field("tokenfirebase") tokenfirebase: String,
+    @Field("token") tokenfirebase: String,
     ) : LoginResponse
 
     @GET("point/{id}")
@@ -45,17 +45,17 @@ interface ApiService {
         @Path("idChallenge") idChallenge: String,
     ) : DetailChallengeResponse
 
-    @POST("chooseChallenge/{UIDUser}")
+    @GET("chooseChallenge/{UIDUser}")
     suspend fun startChallenge(
         @Header("Authorization") token: String,
         @Path("UIDUser") UIDUser: String,
         @Field("idChallenge") idChallenge: String
     ): BasicResponse
 
-    @GET("statusChallenge/{UIDUser}")
+    @GET("statusChallenge/{uid}")
     suspend fun getStatusChallenge(
         @Header("Authorization") token: String,
-        @Path("UIDUser") UIDUser: String,
+        @Path("uid") UIDUser: String,
     ): StatusChallengeResponse
 
     @POST("updateLevel/{UIDUser}")
@@ -63,6 +63,24 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("UIDUser") UIDUser: String,
         @Field("Level") level: Int
+    ): BasicResponse
+
+    @GET("catalog")
+    suspend fun getAllCatalog(
+        @Header("Authorization") token: String,
+    ) : AllCatalogRespone
+
+    @GET("catalog/{idCatalog}")
+    suspend fun getDetailCatalog(
+        @Header("Authorization") token: String,
+        @Path("idCatalog") idCatalog: String,
+    ) : DetailCatalogResponse
+
+    @POST("exchangePoint/{uid}")
+    suspend fun exchangePoint(
+        @Header("Authorization") token: String,
+        @Path("uid") UIDUser: String,
+        @Field("idCatalog") idCatalog: String
     ): BasicResponse
 
 }

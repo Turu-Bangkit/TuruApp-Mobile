@@ -17,17 +17,17 @@ data class StatusChallengeResponse(
 data class DataStatusChallenge(
 
 	@field:SerializedName("start_rules_time")
-	val startRulesTime: Int,
+	val startRulesTime: Int? = null,
 
 	@field:SerializedName("end_rules_time")
-	val endRulesTime: Int,
+	val endRulesTime: Int? = null,
 
 	@field:SerializedName("level_user")
-	val levelUser: Int,
+	val levelUser: Int? = null,
 
-	@field:SerializedName("id_challenge")
-	val idChallenge: String,
+	@field:SerializedName("idChallenge")
+	val idChallenge: String? = null,
 
 	@field:SerializedName("max_level")
-	val maxLevel: Int
+	val maxLevel: Int? = null
 )

@@ -1,6 +1,7 @@
 package com.capstone.turuappmobile.data.api.config
 
 import com.capstone.turuappmobile.BuildConfig
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -9,7 +10,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConfig {
     companion object {
 
-
+        private val customHeader = Interceptor {chain ->
+            val request = chain.request().newBuilder()
+                .addHeader("Accept", "application/json")
+                .build()
+            chain.proceed(request)
+        }
         fun getApiService(): ApiService {
             val loggingInterceptor = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -18,9 +24,10 @@ class ApiConfig {
             }
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(customHeader)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("http://20.25.52.46/git/p3l_dian/public/api/")
+                .baseUrl("https://turu-backend-pd7rmmn7tq-uc.a.run.app/")
                 .addConverterFactory(
                     GsonConverterFactory.create()
                 )

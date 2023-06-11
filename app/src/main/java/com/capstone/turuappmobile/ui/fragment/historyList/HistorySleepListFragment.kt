@@ -69,22 +69,23 @@ class HistorySleepListFragment : Fragment() {
                         it.endTime != null && it.endTime - it.startTime > 4000 && it.realStartTime != null
                     }
 
-                    if(sleepHistoryFilter.isEmpty()) {
+                    if (sleepHistoryFilter.isEmpty()) {
                         showEmptyDataLayout(true)
                     }
 
                     setHistoryAdapter(sleepHistoryFilter)
                 }
 
-            sleepViewModel.allSleepQuality(userUID).observe(viewLifecycleOwner){
-                val sleepQuality = it.last().sleepQuality
-                binding.apply {
-                    circularProgressIndicator.progress = sleepQuality.toInt()
-                    circularTxt.text = requireActivity().getString(
-                        R.string.result_quality,
-                        sleepQuality.toInt()
-                    )
-
+            sleepViewModel.allSleepQuality(userUID).observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    val sleepQuality = it.last().sleepQuality
+                    binding.apply {
+                        circularProgressIndicator.progress = sleepQuality.toInt()
+                        circularTxt.text = requireActivity().getString(
+                            R.string.result_quality,
+                            sleepQuality.toInt()
+                        )
+                    }
                 }
             }
         }
@@ -158,7 +159,6 @@ class HistorySleepListFragment : Fragment() {
 
 
     }
-
 
 
 }

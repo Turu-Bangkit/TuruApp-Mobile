@@ -14,8 +14,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.TuruAppMobile"
-        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".DetailCatalogActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.detailAnalysist.DetailAnalysistActivity"
             android:exported="false" />

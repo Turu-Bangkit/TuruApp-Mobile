@@ -41,6 +41,12 @@ class UsersRepository(
     suspend fun updateLevelChallenge(token: String, UIDUser: String, level: Int) =
         userApi.updateLevelChallenge(token, UIDUser, level)
 
+    suspend fun getAllCatalog(token: String) = userApi.getAllCatalog(token)
+
+    suspend fun getDetailCatalog(token: String, idCatalog: String) = userApi.getDetailCatalog(token, idCatalog)
+
+    suspend fun exchangePoint(token: String, idUser: String, idCatalog: String ) = userApi.exchangePoint(token, idUser, idCatalog)
+
     companion object {
         @Volatile
         private var instance: UsersRepository? = null
