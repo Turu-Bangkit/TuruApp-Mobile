@@ -3,6 +3,7 @@ package com.capstone.turuappmobile.ui.activity.detailChallengeOnProgress
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -23,10 +24,7 @@ import com.capstone.turuappmobile.databinding.ActivityDetailChallengeOnProgressB
 import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeActivity
 import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeViewModel
 import com.capstone.turuappmobile.ui.fragment.challenge.ChallengeFragmentViewModel
-import com.capstone.turuappmobile.utils.convertEpochToHourMinute
-import com.capstone.turuappmobile.utils.convertEpochToJustDateTime
-import com.capstone.turuappmobile.utils.loadImage
-import com.capstone.turuappmobile.utils.onedayinseconds
+import com.capstone.turuappmobile.utils.*
 
 class DetailChallengeOnProgressActivity : AppCompatActivity() {
 
@@ -57,7 +55,7 @@ class DetailChallengeOnProgressActivity : AppCompatActivity() {
                 is Result.Success -> {
                     showLoading(false)
                     statusChallengeResponse = it.data
-                    statusChallengeResponse!!.data.idChallenge?.let { it1 ->
+                    statusChallengeResponse!!.data?.idChallenge?.let { it1 ->
                         detailChallengeOnProgressViewModel.detailChallenge(
                             token,
                             it1
@@ -96,35 +94,56 @@ class DetailChallengeOnProgressActivity : AppCompatActivity() {
             imageCollapsing.loadImage(detailChallengeRespone!!.data.img)
             collapsingToolbar.title = detailChallengeRespone!!.data.name
             bigDayProgress.text =
-                resources.getString(R.string.current_day, statusChallengeResponse!!.data.levelUser)
+                resources.getString(R.string.current_day,
+                    statusChallengeResponse!!.data?.levelUser ?: 0,
+                )
             challengeDetailProgress.progress =
-                100 / statusChallengeResponse!!.data.maxLevel!! * statusChallengeResponse!!.data.levelUser!!
+                100 / statusChallengeResponse!!.data?.maxLevel!! * statusChallengeResponse!!.data?.levelUser!!
         }
 
         val listOnProgress = mutableListOf<OnProgress>()
-        for (i in 1..statusChallengeResponse!!.data.levelUser!!) {
+        for (i in 1..statusChallengeResponse!!.data?.maxLevel!!) {
             val dateStart =
-                statusChallengeResponse!!.data.startRulesTime?.plus((i - 1) * onedayinseconds)
-            val dateEnd = statusChallengeResponse!!.data.endRulesTime?.plus((i - 1) * onedayinseconds)
+                statusChallengeResponse!!.data?.startRulesTime?.plus((i - 1) * onedayinseconds)
+            val dateEnd =
+                statusChallengeResponse!!.data?.endRulesTime?.plus((i - 1) * onedayinseconds)
             val dateOnProgress =
-                "${dateStart?.let { convertEpochToJustDateTime(it) }}-${dateEnd?.let {
-                    convertEpochToJustDateTime(
-                        it
-                    )
-                }}"
+                "${dateStart?.let { convertEpochToJustDateTimeNoYear(it) }}-${
+                    dateEnd?.let {
+                        convertEpochToJustDateTimeNoYear(
+                            it
+                        )
+                    }
+                }"
             val hourOnProgress =
-                "${dateStart?.let { convertEpochToHourMinute(it) }}-${dateEnd?.let {
-                    convertEpochToHourMinute(
-                        it
-                    )
-                }}"
+                "${dateStart?.let { convertEpochToHourMinute(it) }}-${
+                    dateEnd?.let {
+                        convertEpochToHourMinute(
+                            it
+                        )
+                    }
+                }"
+
+            Log.d(
+                "DetailChallengeOnProgressActivity",
+                "Level User: ${statusChallengeResponse!!.data?.levelUser}"
+            )
             val statusOnProgress =
-                if (i < statusChallengeResponse!!.data.levelUser!!) 0 else if (i == statusChallengeResponse!!.data.levelUser) 1 else 2
+                if (i < statusChallengeResponse!!.data?.levelUser!!) 0
+                else if (i == (statusChallengeResponse!!.data?.levelUser ?: 0))
+                {
+                    binding.apply {
+                        streakDaysDetail.text = dateOnProgress
+                        rangeHourDetail.text = hourOnProgress
+                    }
+                    1
+                } else 2
 
             listOnProgress.add(OnProgress(dateOnProgress, hourOnProgress, statusOnProgress, i))
-        }
 
-        val adapter = OnProgressChallengeAdapter(listOnProgress)
+        }
+        binding.constraintLayoutChallenge.visibility = View.VISIBLE
+        val adapter = OnProgressChallengeAdapter(listOnProgress, this)
         binding.rvChallengeOnprogressList.apply {
             layoutManager = LinearLayoutManager(this@DetailChallengeOnProgressActivity)
             setHasFixedSize(true)
@@ -133,6 +152,14 @@ class DetailChallengeOnProgressActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
+        binding.shimmerLayoutDetailChallenge.visibility =
+            if (isLoading) {
+                binding.shimmerLayoutDetailChallenge.startShimmer()
+                View.VISIBLE
+            } else {
+                binding.shimmerLayoutDetailChallenge.stopShimmer()
+                View.GONE
+            }
     }
 
     private fun toastMaker(message: String) {

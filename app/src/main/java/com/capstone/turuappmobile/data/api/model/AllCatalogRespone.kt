@@ -16,7 +16,7 @@ data class AllCatalogRespone(
 
 data class DataCatalog(
 
-	@field:SerializedName("img")
+	@field:SerializedName("image")
 	val img: String,
 
 	@field:SerializedName("price")

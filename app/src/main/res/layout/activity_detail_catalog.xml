@@ -76,4 +76,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/catalogNameTxtDetail"
         app:layout_constraintTop_toBottomOf="@+id/catalogNameTxtDetail" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayoutDetailCatalog"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:translationZ="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageCatalogDetail"
+        app:shimmer_base_alpha="1.0"
+        app:shimmer_direction="left_to_right"
+        app:shimmer_duration="1000"
+        app:shimmer_highlight_alpha="1.0">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/detail_challenge_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <ImageView
+        android:id="@+id/btnBackDetailCatalog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:padding="4dp"
+        android:background="@drawable/circle_shape_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back" />
 </androidx.constraintlayout.widget.ConstraintLayout>

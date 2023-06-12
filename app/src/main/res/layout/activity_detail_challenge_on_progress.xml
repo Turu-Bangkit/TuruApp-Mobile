@@ -20,14 +20,14 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleTextAppearance="@style/ExpandedTitleTextAppearance"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleTextAppearance"
-            app:title="Nama Challenge">
+            app:title="">
 
             <ImageView
                 android:id="@+id/imageCollapsing"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/profile_background"
+                android:background="@color/blue_100"
                 app:layout_collapseMode="parallax" />
 
             <androidx.appcompat.widget.Toolbar
@@ -39,6 +39,24 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayoutDetailChallenge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationZ="2dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:shimmer_base_alpha="1.0"
+        app:shimmer_direction="left_to_right"
+        app:shimmer_duration="1000"
+        app:shimmer_highlight_alpha="0.5">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/detail_challenge_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,12 +66,84 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="164dp"
             android:backgroundTint="@color/blue_100">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:visibility="gone"
+                android:id="@+id/constraintLayoutChallenge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView6"
+                    android:layout_width="148dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/blue_200"
+                    app:cardCornerRadius="16dp"
+                    app:layout_constraintStart_toStartOf="@+id/textView14"
+                    app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            app:srcCompat="@drawable/calendar_icon"
+                            app:tint="@color/green_200" />
+
+                        <TextView
+                            android:id="@+id/streak_days_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:paddingTop="4dp"
+                            android:text="21 Juli - 22 Juli" />
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView7"
+                    android:layout_width="140dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/blue_200"
+                    app:cardCornerRadius="16dp"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/cardView6"
+                    app:layout_constraintStart_toEndOf="@+id/cardView6"
+                    app:layout_constraintTop_toTopOf="@+id/cardView6">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            app:srcCompat="@drawable/icon_time"
+                            app:tint="@color/blue_500" />
+
+                        <TextView
+                            android:id="@+id/range_hour_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:paddingTop="4dp"
+                            android:text="21:00 - 05:00" />
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
 
 
                 <ProgressBar
@@ -62,39 +152,42 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
                     android:progressDrawable="@drawable/custom_progress_bg"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bigDayProgress" />
-
+                    app:layout_constraintTop_toBottomOf="@+id/cardView6" />
 
 
                 <TextView
                     android:id="@+id/bigDayProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Day 3"
-                    android:textColor="@color/green_200"
-                    android:textSize="34sp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/challenge_detail_progress"
+                    app:layout_constraintEnd_toEndOf="@+id/challenge_detail_progress" />
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Today Challenge"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/imageView15"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/challenge_icon"
-                    app:tint="@color/blue_200" />
+
+
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -106,10 +199,7 @@
             android:id="@+id/rv_challenge_onprogress_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp" />
+            android:layout_marginTop="16dp" />
     </LinearLayout>
 
 

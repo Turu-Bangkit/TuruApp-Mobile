@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.home.HomeFragment">
@@ -192,11 +199,12 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView5"
         android:layout_width="0dp"
         android:layout_height="160dp"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="8dp"
         android:backgroundTint="@color/blue_100"
+        app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/textView9">
@@ -204,7 +212,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutNoData"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imageView16"
@@ -222,28 +230,26 @@
                 android:layout_height="wrap_content"
                 android:text="No Data"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/imageView16"
-                app:layout_constraintTop_toBottomOf="@id/imageView16"
                 app:layout_constraintEnd_toEndOf="@id/imageView16"
-                />
+                app:layout_constraintStart_toStartOf="@id/imageView16"
+                app:layout_constraintTop_toBottomOf="@id/imageView16" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="You can start challenge at challenge section"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@id/imageView16"
-                app:layout_constraintTop_toBottomOf="@id/noDataTxtHome"
                 app:layout_constraintEnd_toEndOf="@id/imageView16"
-                />
+                app:layout_constraintStart_toStartOf="@id/imageView16"
+                app:layout_constraintTop_toBottomOf="@id/noDataTxtHome" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="gone"
             android:id="@+id/constraintLayoutData"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/statusOnProgressOdd"
@@ -297,5 +303,89 @@
 
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Catalog"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/cardView5" />
+
+    <Button
+        android:id="@+id/btnToCatalog"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:textColor="@color/blue_500"
+        android:textStyle="bold"
+        android:text="See More"
+        app:layout_constraintBottom_toBottomOf="@+id/textView16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView16" />
+
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_marginTop="16dp"
+        android:id="@+id/shimmerLayoutCatalogHome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:translationZ="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_catalog"
+        app:layout_constraintEnd_toEndOf="@+id/rv_catalog"
+        app:layout_constraintStart_toStartOf="@+id/rv_catalog"
+        app:layout_constraintTop_toTopOf="@+id/rv_catalog"
+        app:shimmer_base_alpha="1.0"
+        app:shimmer_direction="left_to_right"
+        app:shimmer_duration="1000"
+        app:shimmer_highlight_alpha="0.5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <include
+                android:id="@+id/layout_loading_catalog"
+                layout="@layout/item_row_challenge_shimmer"
+                android:layout_width="165dp"
+                android:layout_height="210dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/rv_catalog" />
+
+            <include
+                android:id="@+id/layout_loading_catalog2"
+                layout="@layout/item_row_challenge_shimmer"
+                android:layout_width="165dp"
+                android:layout_height="210dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/rv_catalog" />
+        </LinearLayout>
+
+
+
+
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_catalog"
+        android:layout_width="0dp"
+        android:layout_height="242dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btnToCatalog"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/textView16"
+        app:layout_constraintVertical_bias="1.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

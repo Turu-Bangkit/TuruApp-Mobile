@@ -142,10 +142,7 @@ class OnBoardingActivity : AppCompatActivity() {
 
                         Toast.makeText(this, "Quality: $result", Toast.LENGTH_SHORT).show()
 
-                    } else {
-                        updateUi()
                     }
-
                     sleepViewModel.allSleepQuality(User.UID)
                         .observe(this) { qualityEntities ->
                             if (qualityEntities.isNotEmpty()) {

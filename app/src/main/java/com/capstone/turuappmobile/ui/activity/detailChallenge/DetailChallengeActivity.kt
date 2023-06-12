@@ -57,14 +57,47 @@ class DetailChallengeActivity : AppCompatActivity() {
             }
         }
 
+        detailChallengeFragmentViewModel.startChallengeResult.observe(this){
+            when(it){
+                is Result.Loading -> {
+                    showLoadingNotShimmer(true)
+                }
+                is Result.Success -> {
+                    showLoadingNotShimmer(false)
+                    toastMaker(it.data.message)
+                    finish()
+                }
+                is Result.Error -> {
+                    showLoadingNotShimmer(false)
+                    toastMaker(it.error)
+                }
+            }
+        }
 
 
+        binding.btnBackDetailChallenge.setOnClickListener {
+            finish()
+        }
+
+
+
+    }
+
+    private fun setAllData(data: Data){
+        binding.apply {
+            imageChallengeDetail.loadImage(data.img)
+            challengeNameTxtDetail.text = data.name
+            streakDaysDetail.text = resources.getString(R.string.streak_days, data.howManyDays)
+            rangeHourDetail.text = resources.getString(R.string.range_hour, data.startTime, data.endTime)
+            pointsTxtDetail.text = resources.getString(R.string.points, data.point.toString())
+            txtDetailChallenge.text = data.desc
+        }
         binding.tabLayout.addOnTabSelectedListener(
             object : TabLayout.OnTabSelectedListener{
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     when(tab?.position){
                         0 -> {
-                            binding.txtDetailChallenge.text = resources.getString(R.string.lorem)
+                            binding.txtDetailChallenge.text = data.desc
                         }
                         1 -> {
                             binding.txtDetailChallenge.text = resources.getString(R.string.lorem2)
@@ -83,19 +116,6 @@ class DetailChallengeActivity : AppCompatActivity() {
 
             }
         )
-
-
-    }
-
-    private fun setAllData(data: Data){
-        binding.apply {
-            imageChallengeDetail.loadImage(data.img)
-            challengeNameTxtDetail.text = data.name
-            streakDaysDetail.text = resources.getString(R.string.streak_days, data.howManyDays)
-            rangeHourDetail.text = resources.getString(R.string.range_hour, data.startTime, data.endTime)
-            pointsTxtDetail.text = resources.getString(R.string.points, data.point.toString())
-            txtDetailChallenge.text = data.desc
-        }
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -107,6 +127,11 @@ class DetailChallengeActivity : AppCompatActivity() {
                 binding.shimmerLayoutDetailChallenge.stopShimmer()
                 View.GONE
             }
+    }
+
+    private fun showLoadingNotShimmer(isLoading: Boolean) {
+        binding.layoutLoading.layoutAllLoading.visibility =
+            if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun toastMaker(message: String) {

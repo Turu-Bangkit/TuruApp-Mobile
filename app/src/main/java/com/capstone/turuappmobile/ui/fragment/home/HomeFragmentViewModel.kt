@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.capstone.turuappmobile.data.api.model.AllCatalogRespone
 import com.capstone.turuappmobile.data.api.model.BasicResponse
 import com.capstone.turuappmobile.data.api.model.StatusChallengeResponse
 import com.capstone.turuappmobile.data.api.model.UserPointsResponse
@@ -23,6 +24,29 @@ class HomeFragmentViewModel (private val repository: UsersRepository) : ViewMode
 
     private val _updateLevelResult = MutableLiveData<Result<BasicResponse>>()
     val updateLevelResult: MutableLiveData<Result<BasicResponse>> = _updateLevelResult
+
+    private val _catalogResult = MutableLiveData<Result<AllCatalogRespone>>()
+    val catalogResult: MutableLiveData<Result<AllCatalogRespone>> = _catalogResult
+
+    fun allcatalog(token: String) = viewModelScope.launch {
+        callAllcatalog(token)
+    }
+
+    private suspend fun callAllcatalog(token: String){
+
+        try {
+            if(_catalogResult.value is Result.Success){
+                return
+            }else{
+                _catalogResult.postValue(Result.Loading)
+                val response = repository.getAllCatalog(token)
+                _catalogResult.postValue(Result.Success(response))
+            }
+        } catch (e: Exception) {
+            _catalogResult.postValue(Result.Error(e.message.toString()))
+        }
+
+    }
 
     fun checkPoints(token: String , id : String) = viewModelScope.launch {
         callCheckPoints(token, id)

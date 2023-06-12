@@ -16,7 +16,7 @@
         android:theme="@style/Theme.TuruAppMobile"
         tools:targetApi="31">
         <activity
-            android:name=".DetailCatalogActivity"
+            android:name=".ui.activity.detailCatalog.DetailCatalogActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.detailAnalysist.DetailAnalysistActivity"

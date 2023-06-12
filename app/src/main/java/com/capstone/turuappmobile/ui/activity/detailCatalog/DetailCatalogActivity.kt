@@ -2,6 +2,7 @@ package com.capstone.turuappmobile.ui.activity.detailCatalog
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.capstone.turuappmobile.data.api.model.DataDetailCatalog
@@ -51,6 +52,10 @@ class DetailCatalogActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.btnBackDetailCatalog.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setAllData(data: DataDetailCatalog){
@@ -62,7 +67,14 @@ class DetailCatalogActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-
+        binding.shimmerLayoutDetailCatalog.visibility =
+            if (isLoading){
+                binding.shimmerLayoutDetailCatalog.startShimmer()
+                View.VISIBLE
+            } else {
+                binding.shimmerLayoutDetailCatalog.stopShimmer()
+                View.GONE
+            }
     }
     private fun toastMaker(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

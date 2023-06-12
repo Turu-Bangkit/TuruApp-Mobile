@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.turuappmobile.data.repository.UsersRepository
 import com.capstone.turuappmobile.di.Injection
+import com.capstone.turuappmobile.ui.activity.catalog.CatalogViewModel
+import com.capstone.turuappmobile.ui.activity.detailCatalog.DetailCatalogActivity
+import com.capstone.turuappmobile.ui.activity.detailCatalog.DetailCatalogViewModel
 import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeViewModel
 import com.capstone.turuappmobile.ui.activity.detailChallengeOnProgress.DetailChallengeOnProgressViewModel
 import com.capstone.turuappmobile.ui.activity.login.LoginViewModel
@@ -40,6 +43,10 @@ class ViewModelFactoryUser(
             return DetailChallengeViewModel(usersRepository) as T
         }else if (modelClass.isAssignableFrom(DetailChallengeOnProgressViewModel::class.java)) {
             return DetailChallengeOnProgressViewModel(usersRepository) as T
+        }else if (modelClass.isAssignableFrom(CatalogViewModel::class.java)) {
+            return CatalogViewModel(usersRepository) as T
+        }else if (modelClass.isAssignableFrom(DetailCatalogViewModel::class.java)) {
+            return DetailCatalogViewModel(usersRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

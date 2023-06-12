@@ -34,7 +34,13 @@ class CatalogAdapter(
             imageCatalog.loadImage(catalogEntity.img)
             namaCatalogTxt.text = catalogEntity.name
             pointsTxt.text =  context.resources.getString(R.string.points, catalogEntity.point.toString())
+
         }
+
+        holder.itemView.setOnClickListener {
+            onClick(catalogEntity)
+        }
+
     }
 
     override fun getItemCount(): Int = catalogList.size

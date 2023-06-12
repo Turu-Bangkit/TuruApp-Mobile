@@ -13,7 +13,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.turuappmobile.R
+import com.capstone.turuappmobile.adapter.CatalogAdapter
+import com.capstone.turuappmobile.data.api.model.DataCatalog
 import com.capstone.turuappmobile.data.api.model.DataStatusChallenge
 import com.capstone.turuappmobile.data.api.model.StatusChallengeResponse
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
@@ -23,6 +26,8 @@ import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
 import com.capstone.turuappmobile.receiver.SleepReceiver
 import com.capstone.turuappmobile.ui.activity.catalog.CatalogActivity
+import com.capstone.turuappmobile.ui.activity.detailCatalog.DetailCatalogActivity
+import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeActivity
 import com.capstone.turuappmobile.ui.activity.detailChallengeOnProgress.DetailChallengeOnProgressActivity
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepActivity
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
@@ -45,6 +50,7 @@ class HomeFragment : Fragment() {
     private val sleepViewModel by viewModels<SleepViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
+
 
     private var UIDUser = ""
     private var JWTtoken = ""
@@ -109,6 +115,7 @@ class HomeFragment : Fragment() {
             }
             homeFragmentViewModel.statusChallenge(JWTtoken, preferencesModel.UID)
             homeFragmentViewModel.checkPoints(JWTtoken, preferencesModel.UID)
+            homeFragmentViewModel.allcatalog(JWTtoken)
 
 
         }
@@ -136,7 +143,7 @@ class HomeFragment : Fragment() {
                 }
                 is Result.Success -> {
                     showLoading(false)
-                    startCheckChallenge(it.data.data)
+                    if(it.data.data != null) startCheckChallenge(it.data.data)
                 }
                 is Result.Error -> {
                     showLoading(false)
@@ -145,8 +152,28 @@ class HomeFragment : Fragment() {
             }
         }
 
+        homeFragmentViewModel.catalogResult.observe(viewLifecycleOwner) {
+            when (it) {
+                is Result.Loading -> {
+                    showLoadingShimmer(true)
+                }
+                is Result.Success -> {
+                    showLoadingShimmer(false)
+                    setDataCatalog(it.data.data)
+                }
+                is Result.Error -> {
+                    showLoadingShimmer(false)
+                    toastMaker(it.error)
+                }
+            }
+        }
+
         binding.btnToChallengeOnProgress.setOnClickListener {
             startActivity(Intent(requireActivity(), DetailChallengeOnProgressActivity::class.java))
+        }
+
+        binding.btnToCatalog.setOnClickListener {
+            startActivity(Intent(requireActivity(), CatalogActivity::class.java))
         }
 
     }
@@ -166,6 +193,7 @@ class HomeFragment : Fragment() {
                     sleepViewModel.checkChallengePass(newStartRules, newEndRules, UIDUser)
                         .observe(viewLifecycleOwner) {
                             if (it > 0) levelUser++
+
                             homeFragmentViewModel.updateLevel(JWTtoken, UIDUser, levelUser)
                         }
                 }
@@ -199,8 +227,33 @@ class HomeFragment : Fragment() {
             if (isLoading) View.VISIBLE else View.GONE
     }
 
+    private fun showLoadingShimmer(isLoading: Boolean){
+        binding.shimmerLayoutCatalogHome.visibility =
+            if (isLoading){
+                binding.shimmerLayoutCatalogHome.startShimmer()
+                View.VISIBLE
+            } else {
+                binding.shimmerLayoutCatalogHome.stopShimmer()
+                View.GONE
+            }
+    }
+
     private fun toastMaker(message: String) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setDataCatalog(listChallenge: List<DataCatalog>){
+        val adapter = CatalogAdapter(listChallenge, requireActivity()){
+            val intent = Intent(requireActivity(), DetailCatalogActivity::class.java)
+            intent.putExtra(DetailCatalogActivity.CATALOG_ID, it.id)
+            startActivity(intent)
+        }
+
+        binding.rvCatalog.apply {
+            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = adapter
+        }
+
     }
 
     private fun unsubscribeToSleepSegmentUpdates(context: Context, pendingIntent: PendingIntent) {

@@ -16,7 +16,7 @@ data class DetailCatalogResponse(
 
 data class DataDetailCatalog(
 
-	@field:SerializedName("img")
+	@field:SerializedName("image")
 	val img: String,
 
 	@field:SerializedName("price")

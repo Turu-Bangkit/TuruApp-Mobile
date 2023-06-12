@@ -2,8 +2,11 @@ package com.capstone.turuappmobile.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +16,8 @@ import com.capstone.turuappmobile.databinding.ItemRowChallengeOnprogressBinding
 
 class OnProgressChallengeAdapter(
     private val listOnProgress: List<OnProgress>,
-) : ListAdapter<OnProgress, OnProgressChallengeAdapter.ListViewHolder>(DIFF_CALLBACK) {
+    private val context: Context,
+) : RecyclerView.Adapter<OnProgressChallengeAdapter.ListViewHolder>() {
 
     class ListViewHolder(var binding: ItemRowChallengeOnprogressBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -30,26 +34,32 @@ class OnProgressChallengeAdapter(
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val data = listOnProgress[position]
-
+        Log.d(
+            "DetailChallengeOnProgressActivity",
+            "List On Progress: ${data.dateOnProgress}  ${data.bigOnProgress} ${data.statusOnProgress} ${data.hourOnProgress}"
+        )
         holder.binding.apply {
-            var text = ""
-            val color = when(data.statusOnProgress){
+            val text: String
+            val background : Drawable = when(data.statusOnProgress){
                 0 ->{ text = "Completed"
-                    R.color.green_200
+                    ContextCompat.getDrawable(context, R.drawable.circle_shape_green)!!
                 }
                 1 ->{
                     text = "On Progress"
-                    R.color.yellow_100
+                    ContextCompat.getDrawable(context, R.drawable.bg_rounded_yellow)!!
                 }
                 2 ->{
                     text = "Soon"
-                    R.color.blue_600
+                    ContextCompat.getDrawable(context, R.drawable.bg_rounded_blue500)!!
                 }
-                else ->{
-                    text = "Expired"
-                    R.color.red_200
-                }
+
+                else -> {
+                    text = "Soon"
+                    ContextCompat.getDrawable(context, R.drawable.bg_rounded_blue500)!!}
             }
+
+            Log.d("DetailChallengeOnProgressActivity", "Text: $text")
+
             if(position % 2 == 0){
                 dateOnProgressEven.visibility = ViewGroup.VISIBLE
                 hourOnProgressEven.visibility = ViewGroup.VISIBLE
@@ -60,8 +70,15 @@ class OnProgressChallengeAdapter(
                 hourOnProgressEven.text = data.hourOnProgress
 
                 statusOnProgressEven.text = text
-                statusOnProgressEven.setBackgroundColor(color)
-                bigOnProgressEven.text = data.bigOnProgress.toString()
+                statusOnProgressEven.background = background
+                bigOnProgressEven.text = context.resources.getString(R.string.current_day, data.bigOnProgress)
+
+                dateOnProgressOdd.visibility = ViewGroup.GONE
+                hourOnProgressOdd.visibility = ViewGroup.GONE
+                statusOnProgressOdd.visibility = ViewGroup.GONE
+                bigOnProgressOdd.visibility = ViewGroup.GONE
+
+
             }else{
                 dateOnProgressOdd.visibility = ViewGroup.VISIBLE
                 hourOnProgressOdd.visibility = ViewGroup.VISIBLE
@@ -71,9 +88,15 @@ class OnProgressChallengeAdapter(
                 dateOnProgressOdd.text = data.dateOnProgress
                 hourOnProgressOdd.text = data.hourOnProgress
 
-                statusOnProgressEven.text = text
-                statusOnProgressEven.setBackgroundColor(color)
-                bigOnProgressOdd.text = data.bigOnProgress.toString()
+                statusOnProgressOdd.text = text
+                statusOnProgressOdd.background = background
+                bigOnProgressOdd.text = context.resources.getString(R.string.current_day, data.bigOnProgress)
+
+                dateOnProgressEven.visibility = ViewGroup.GONE
+                hourOnProgressEven.visibility = ViewGroup.GONE
+                statusOnProgressEven.visibility = ViewGroup.GONE
+                bigOnProgressEven.visibility = ViewGroup.GONE
+
             }
         }
 
@@ -82,24 +105,5 @@ class OnProgressChallengeAdapter(
 
     override fun getItemCount(): Int = listOnProgress.size
 
-    companion object {
-        val DIFF_CALLBACK: DiffUtil.ItemCallback<OnProgress> =
-            object : DiffUtil.ItemCallback<OnProgress>() {
-                override fun areItemsTheSame(
-                    oldUser: OnProgress,
-                    newUser: OnProgress
-                ): Boolean {
-                    return oldUser.bigOnProgress == newUser.bigOnProgress
-                }
-
-                @SuppressLint("DiffUtilEquals")
-                override fun areContentsTheSame(
-                    oldUser: OnProgress,
-                    newUser: OnProgress
-                ): Boolean {
-                    return oldUser == newUser
-                }
-            }
-    }
 }
 

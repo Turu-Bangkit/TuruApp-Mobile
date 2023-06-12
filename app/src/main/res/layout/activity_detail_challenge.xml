@@ -7,6 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.detailChallenge.DetailChallengeActivity">
 
+    <include
+        android:id="@+id/layout_loading"
+        layout="@layout/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
 
     <ImageView
         android:id="@+id/imageChallengeDetail"
@@ -212,5 +219,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView8"
         app:layout_constraintStart_toStartOf="@+id/cardView8" />
+
+    <ImageView
+        android:id="@+id/btnBackDetailChallenge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:padding="4dp"
+        android:background="@drawable/circle_shape_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

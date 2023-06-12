@@ -60,12 +60,16 @@ class CatalogActivity : AppCompatActivity() {
             }
         }
 
+        binding.toolbar.setNavigationOnClickListener{
+            finish()
+        }
+
     }
 
     private fun setAllChallengeAdapter(listChallenge: List<DataCatalog>){
         val adapter = CatalogAdapter(listChallenge, this){
             val intent = Intent(this, DetailCatalogActivity::class.java)
-            intent.putExtra(DetailChallengeActivity.CHALLENGE_ID, it.id)
+            intent.putExtra(DetailCatalogActivity.CATALOG_ID, it.id)
             startActivity(intent)
         }
         binding.rvCatalog.layoutManager = GridLayoutManager(this, 2)
@@ -74,7 +78,14 @@ class CatalogActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-
+        binding.layoutLoadingCatalog.visibility =
+            if (isLoading){
+                binding.layoutLoadingCatalog.startShimmer()
+                View.VISIBLE
+            } else {
+                binding.layoutLoadingCatalog.stopShimmer()
+                View.GONE
+            }
     }
 
     private fun toastMaker(message: String) {

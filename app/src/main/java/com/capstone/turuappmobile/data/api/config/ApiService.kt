@@ -45,7 +45,8 @@ interface ApiService {
         @Path("idChallenge") idChallenge: String,
     ) : DetailChallengeResponse
 
-    @GET("chooseChallenge/{UIDUser}")
+    @FormUrlEncoded
+    @POST("chooseChallenge/{UIDUser}")
     suspend fun startChallenge(
         @Header("Authorization") token: String,
         @Path("UIDUser") UIDUser: String,
@@ -58,11 +59,12 @@ interface ApiService {
         @Path("uid") UIDUser: String,
     ): StatusChallengeResponse
 
+    @FormUrlEncoded
     @POST("updateLevel/{UIDUser}")
     suspend fun updateLevelChallenge(
         @Header("Authorization") token: String,
         @Path("UIDUser") UIDUser: String,
-        @Field("Level") level: Int
+        @Field("level") level: Int
     ): BasicResponse
 
     @GET("catalog")
