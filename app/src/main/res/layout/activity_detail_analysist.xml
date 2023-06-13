@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/myToolbarDetailHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_100"
+        app:navigationIcon="@drawable/baseline_arrow_back"
+        app:navigationIconTint="@color/green_200"
+        app:title="History Sleep Quality"
+        style="@style/Widget.App.Toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <include
         android:id="@+id/layout_loading_empty"
@@ -15,6 +29,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_below="@+id/myToolbarDetailHistory"
         android:layout_height="match_parent">
 
 
@@ -195,4 +210,4 @@
 
     </ScrollView>
 
-</FrameLayout>
+</RelativeLayout>

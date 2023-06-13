@@ -4,18 +4,9 @@ import android.content.Intent
 import android.content.res.AssetFileDescriptor
 import android.content.res.AssetManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepQualityEntity
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
@@ -26,21 +17,13 @@ import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
 import com.capstone.turuappmobile.ui.fragment.historyAnalysis.HistorySleepAnalysistViewModel
 import com.capstone.turuappmobile.utils.calculateCoefficientOfVariation
 import com.capstone.turuappmobile.utils.convertEpochToHour
-import com.capstone.turuappmobile.utils.convertEpochToJustDateTime
 import com.capstone.turuappmobile.utils.convertTimeStringToSeconds
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
-import java.time.Instant
 
 class OnBoardingActivity : AppCompatActivity() {
 

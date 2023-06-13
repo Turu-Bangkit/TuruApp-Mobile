@@ -1,20 +1,14 @@
 package com.capstone.turuappmobile.ui.fragment.historyList
 
+//import com.capstone.turuappmobile.ui.activity.detailHistorySleep.DetailHistoryActivity
+//import com.capstone.turuappmobile.ui.activity.historySleep.HistorySleepAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.adapter.HistorySleepAdapter
@@ -24,13 +18,8 @@ import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentHistorySleepListBinding
 import com.capstone.turuappmobile.ui.activity.detailAnalysist.DetailAnalysistActivity
 import com.capstone.turuappmobile.ui.activity.detailHistorySleep.DetailHistoryActivity
-//import com.capstone.turuappmobile.ui.activity.detailHistorySleep.DetailHistoryActivity
-//import com.capstone.turuappmobile.ui.activity.historySleep.HistorySleepAdapter
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
-import com.capstone.turuappmobile.ui.fragment.home.HomeFragmentViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class HistorySleepListFragment : Fragment() {

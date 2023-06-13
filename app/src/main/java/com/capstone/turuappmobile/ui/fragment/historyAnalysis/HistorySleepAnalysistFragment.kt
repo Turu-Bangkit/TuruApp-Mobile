@@ -1,39 +1,25 @@
 package com.capstone.turuappmobile.ui.fragment.historyAnalysis
 
-import android.content.res.AssetFileDescriptor
-import android.content.res.AssetManager
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.capstone.turuappmobile.R
-import com.capstone.turuappmobile.data.db.SleepQualityEntity
-import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentHistorySleepAnalysistBinding
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
-import com.capstone.turuappmobile.ui.fragment.historyList.HistorySleepListViewModel
-import com.capstone.turuappmobile.utils.*
+import com.capstone.turuappmobile.utils.convertEpochToJustDateTime
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
-import org.tensorflow.lite.Interpreter
-import java.io.FileInputStream
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
-import java.nio.MappedByteBuffer
-import java.nio.channels.FileChannel
 import java.time.Instant
 
 

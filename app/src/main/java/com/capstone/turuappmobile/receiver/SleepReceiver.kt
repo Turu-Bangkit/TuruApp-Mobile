@@ -10,7 +10,6 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepClassifyEventEntity
@@ -66,8 +65,8 @@ class SleepReceiver : BroadcastReceiver() {
                 if( receiveCount > 10 && convertedToEntityVersion[0].confidence < 60){
                     showAlarmNotification(
                         context,
-                        "Youre Awake!",
-                        "If you are awake, please open the app and turn off sleep mode",
+                        "You are Awake!",
+                        "Sleep Session Ended",
                         ID
                     )
                     repository.updateEndTime(Instant.now().epochSecond.toInt())

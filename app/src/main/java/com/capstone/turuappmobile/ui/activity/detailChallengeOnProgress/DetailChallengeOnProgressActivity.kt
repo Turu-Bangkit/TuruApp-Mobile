@@ -1,30 +1,24 @@
 package com.capstone.turuappmobile.ui.activity.detailChallengeOnProgress
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.turuappmobile.R
-import com.capstone.turuappmobile.adapter.ChallengeSleepAdapter
 import com.capstone.turuappmobile.adapter.OnProgressChallengeAdapter
-import com.capstone.turuappmobile.data.api.model.DataItem
 import com.capstone.turuappmobile.data.api.model.DetailChallengeResponse
 import com.capstone.turuappmobile.data.api.model.StatusChallengeResponse
 import com.capstone.turuappmobile.data.db.custom.OnProgress
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.ActivityDetailChallengeOnProgressBinding
-import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeActivity
-import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeViewModel
-import com.capstone.turuappmobile.ui.fragment.challenge.ChallengeFragmentViewModel
-import com.capstone.turuappmobile.utils.*
+import com.capstone.turuappmobile.utils.convertEpochToHourMinute
+import com.capstone.turuappmobile.utils.convertEpochToJustDateTimeNoYear
+import com.capstone.turuappmobile.utils.loadImage
+import com.capstone.turuappmobile.utils.onedayinseconds
 
 class DetailChallengeOnProgressActivity : AppCompatActivity() {
 
@@ -84,6 +78,10 @@ class DetailChallengeOnProgressActivity : AppCompatActivity() {
                     toastMaker(it.error)
                 }
             }
+        }
+
+        binding.myToolBarOnProgress.setNavigationOnClickListener{
+            finish()
         }
 
 

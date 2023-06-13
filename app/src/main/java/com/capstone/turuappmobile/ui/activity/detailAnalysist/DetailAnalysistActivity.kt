@@ -1,13 +1,11 @@
 package com.capstone.turuappmobile.ui.activity.detailAnalysist
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
@@ -31,8 +29,6 @@ class DetailAnalysistActivity : AppCompatActivity() {
 
     private var userUID = ""
 
-    private var result = 0F
-
     private var confidenceQuality = mutableListOf<Entry>()
 
     private val sleepViewModel by viewModels<SleepViewModel> {
@@ -47,6 +43,10 @@ class DetailAnalysistActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailAnalysistBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.myToolbarDetailHistory.setNavigationOnClickListener{
+            finish()
+        }
 
         historySleepAnalysistViewModel.getUserSession.observe(this) { User ->
             userUID = User.UID
@@ -68,7 +68,7 @@ class DetailAnalysistActivity : AppCompatActivity() {
                                 R.string.result_quality,
                                 sleepQuality.last().toInt()
                             )
-                        binding.sleepQualityStatusTxt.text = qualityCondition(result)
+                        binding.sleepQualityStatusTxt.text = qualityCondition(sleepQuality.last())
 
 
                         binding.averageSleepQualityTxt.text =
@@ -120,10 +120,10 @@ class DetailAnalysistActivity : AppCompatActivity() {
                             val arrayHistoryDataSet =
                                 LineDataSet(confidenceQuality, "History")
                             arrayHistoryDataSet.setDrawFilled(true)
-                            arrayHistoryDataSet.fillDrawable =
-                                getDrawable(
-                                    R.drawable.background_gradient_chart
-                                )
+                            arrayHistoryDataSet.fillDrawable = ContextCompat.getDrawable(
+                                this@DetailAnalysistActivity,
+                                R.drawable.background_gradient_chart
+                            )
                             arrayHistoryDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
                             arrayHistoryDataSet.cubicIntensity =
                                 0.2f

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.capstone.turuappmobile.data.repository.UsersRepository
 import com.capstone.turuappmobile.di.Injection
 import com.capstone.turuappmobile.ui.activity.catalog.CatalogViewModel
-import com.capstone.turuappmobile.ui.activity.detailCatalog.DetailCatalogActivity
 import com.capstone.turuappmobile.ui.activity.detailCatalog.DetailCatalogViewModel
 import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeViewModel
 import com.capstone.turuappmobile.ui.activity.detailChallengeOnProgress.DetailChallengeOnProgressViewModel

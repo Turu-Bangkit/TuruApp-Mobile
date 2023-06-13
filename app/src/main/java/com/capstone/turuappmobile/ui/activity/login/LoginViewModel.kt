@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.capstone.turuappmobile.data.api.model.LoginResponse
 import com.capstone.turuappmobile.data.api.model.UserPreferencesModel
-import com.capstone.turuappmobile.data.repository.UsersRepository
 import com.capstone.turuappmobile.data.repository.Result
+import com.capstone.turuappmobile.data.repository.UsersRepository
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val usersRepository: UsersRepository) : ViewModel() {

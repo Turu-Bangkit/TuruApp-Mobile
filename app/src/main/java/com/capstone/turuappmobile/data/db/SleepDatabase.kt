@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.capstone.turuappmobile.data.db.SleepClassifyEventDao
 
 
 private const val DATABASE_NAME = "sleep_segments_database"

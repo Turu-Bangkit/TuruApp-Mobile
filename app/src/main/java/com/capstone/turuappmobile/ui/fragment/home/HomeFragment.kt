@@ -6,34 +6,34 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.adapter.CatalogAdapter
 import com.capstone.turuappmobile.data.api.model.DataCatalog
 import com.capstone.turuappmobile.data.api.model.DataStatusChallenge
-import com.capstone.turuappmobile.data.api.model.StatusChallengeResponse
-import com.capstone.turuappmobile.data.db.SleepTimeEntity
-import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
-import com.capstone.turuappmobile.databinding.FragmentHomeBinding
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
+import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
+import com.capstone.turuappmobile.databinding.FragmentHomeBinding
 import com.capstone.turuappmobile.receiver.SleepReceiver
 import com.capstone.turuappmobile.ui.activity.catalog.CatalogActivity
 import com.capstone.turuappmobile.ui.activity.detailCatalog.DetailCatalogActivity
-import com.capstone.turuappmobile.ui.activity.detailChallenge.DetailChallengeActivity
 import com.capstone.turuappmobile.ui.activity.detailChallengeOnProgress.DetailChallengeOnProgressActivity
-import com.capstone.turuappmobile.ui.activity.trackSleep.SleepActivity
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
 import com.capstone.turuappmobile.utils.onedayinseconds
+import com.example.awesomedialog.*
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import java.time.Instant
 
 
@@ -42,6 +42,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    private var auth: FirebaseAuth? = null
 
     private val homeFragmentViewModel by viewModels<HomeFragmentViewModel> {
         ViewModelFactoryUser.getInstance(requireActivity())
@@ -65,6 +66,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        auth = Firebase.auth
+        val firebaseUser = auth?.currentUser
+
+        binding.usernameHome.text =
+            requireActivity().getString(R.string.greeting, firebaseUser?.displayName)
 
         binding.challengeProgressHome.progress = 50
 
@@ -143,7 +150,7 @@ class HomeFragment : Fragment() {
                 }
                 is Result.Success -> {
                     showLoading(false)
-                    if(it.data.data != null) startCheckChallenge(it.data.data)
+                    if (it.data.data != null) startCheckChallenge(it.data.data)
                 }
                 is Result.Error -> {
                     showLoading(false)
@@ -168,6 +175,83 @@ class HomeFragment : Fragment() {
             }
         }
 
+        homeFragmentViewModel.updateLevelResult.observe(viewLifecycleOwner) {
+            when (it) {
+                is Result.Loading -> {
+
+                }
+                is Result.Success -> {
+                    if (it.data.message == "Challenge Failed !") {
+                        AwesomeDialog.build(requireActivity())
+                            .title(
+                                it.data.message,
+                                titleColor = ContextCompat.getColor(
+                                    requireActivity(),
+                                    R.color.white
+                                ),
+                            )
+                            .background(R.drawable.bg_rounded_blue200)
+                            .position(AwesomeDialog.POSITIONS.CENTER)
+                            .onPositive(
+                                "Ok",
+                                buttonBackgroundColor = R.drawable.bg_rounded_red,
+                                textColor = ContextCompat.getColor(requireActivity(), R.color.white)
+                            ) {
+
+                            }
+                    } else if (it.data.message == "Success Finished Challenge !") {
+                        AwesomeDialog.build(requireActivity())
+                            .title(
+                                it.data.message,
+                                titleColor = ContextCompat.getColor(
+                                    requireActivity(),
+                                    R.color.white
+                                ),
+                            )
+                            .body(
+                                "You got the points !",
+                                color = ContextCompat.getColor(requireActivity(), R.color.white)
+                            )
+                            .background(R.drawable.bg_rounded_blue200)
+                            .position(AwesomeDialog.POSITIONS.CENTER)
+                            .onPositive(
+                                "Ok",
+                                buttonBackgroundColor = R.drawable.bg_rounded_blue500,
+                                textColor = ContextCompat.getColor(requireActivity(), R.color.white)
+                            ) {
+
+                            }
+                    } else {
+                        AwesomeDialog.build(requireActivity())
+                            .title(
+                                it.data.message,
+                                titleColor = ContextCompat.getColor(
+                                    requireActivity(),
+                                    R.color.white
+                                ),
+                            )
+                            .body(
+                                "Success Update Level !",
+                                color = ContextCompat.getColor(requireActivity(), R.color.white)
+                            )
+                            .background(R.drawable.bg_rounded_blue200)
+                            .position(AwesomeDialog.POSITIONS.CENTER)
+                            .onPositive(
+                                "Ok",
+                                buttonBackgroundColor = R.drawable.bg_rounded_blue500,
+                                textColor = ContextCompat.getColor(requireActivity(), R.color.white)
+                            ) {
+
+                            }
+                    }
+                }
+                is Result.Error -> {
+                    toastMaker(it.error)
+                }
+            }
+        }
+
+
         binding.btnToChallengeOnProgress.setOnClickListener {
             startActivity(Intent(requireActivity(), DetailChallengeOnProgressActivity::class.java))
         }
@@ -180,26 +264,32 @@ class HomeFragment : Fragment() {
 
     private fun startCheckChallenge(data: DataStatusChallenge) {
         var levelUser = data.levelUser
-        if (levelUser != null) {
+        if (levelUser != null && levelUser > 0) {
             val timeNowInEpoch = Instant.now().epochSecond.toInt()
             val newStartRules = data.startRulesTime?.plus(
                 (levelUser.minus(1)).times(
                     onedayinseconds
-                ) )
-            val newEndRules = data.endRulesTime?.plus((levelUser.minus(1)).times(onedayinseconds) )
+                )
+            )
+            val newEndRules = data.endRulesTime?.plus((levelUser.minus(1)).times(onedayinseconds))
 
             if (timeNowInEpoch >= newEndRules!!) {
                 if (newStartRules != null) {
                     sleepViewModel.checkChallengePass(newStartRules, newEndRules, UIDUser)
                         .observe(viewLifecycleOwner) {
-                            if (it > 0) levelUser++
+                            levelUser = if (it > 0) {
+                                levelUser!! + 1
+                            } else {
+                                0
+                            }
 
-                            homeFragmentViewModel.updateLevel(JWTtoken, UIDUser, levelUser)
+                            homeFragmentViewModel.updateLevel(JWTtoken, UIDUser, levelUser!!)
+                            data.maxLevel?.let { updateUIChallenge(levelUser!!, it) }
                         }
                 }
             }
 
-            data.maxLevel?.let { updateUIChallenge(levelUser, it) }
+            data.maxLevel?.let { updateUIChallenge(levelUser!!, it) }
 
         } else {
             updateUIChallenge(0, 0)
@@ -207,7 +297,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateUIChallenge(newLevelUser: Int, maxLevel: Int) {
-        if (newLevelUser > 0) {
+        if (newLevelUser in 1..maxLevel) {
             binding.constraintLayoutData.visibility = View.VISIBLE
             binding.constraintLayoutNoData.visibility = View.GONE
             binding.challengeProgressHome.progress = 100 / maxLevel * newLevelUser
@@ -216,10 +306,12 @@ class HomeFragment : Fragment() {
                 newLevelUser
             )
 
-        }else{
+        } else {
             binding.constraintLayoutData.visibility = View.GONE
             binding.constraintLayoutNoData.visibility = View.VISIBLE
         }
+
+        showLoadingStatusChallenge(false)
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -227,9 +319,9 @@ class HomeFragment : Fragment() {
             if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun showLoadingShimmer(isLoading: Boolean){
+    private fun showLoadingShimmer(isLoading: Boolean) {
         binding.shimmerLayoutCatalogHome.visibility =
-            if (isLoading){
+            if (isLoading) {
                 binding.shimmerLayoutCatalogHome.startShimmer()
                 View.VISIBLE
             } else {
@@ -238,19 +330,25 @@ class HomeFragment : Fragment() {
             }
     }
 
+    private fun showLoadingStatusChallenge(isLoading: Boolean) {
+        binding.layoutLoadingChallengeStatus.itemPointsShimmer.visibility =
+            if (isLoading) View.VISIBLE else View.GONE
+    }
+
     private fun toastMaker(message: String) {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun setDataCatalog(listChallenge: List<DataCatalog>){
-        val adapter = CatalogAdapter(listChallenge, requireActivity()){
+    private fun setDataCatalog(listChallenge: List<DataCatalog>) {
+        val adapter = CatalogAdapter(listChallenge, requireActivity()) {
             val intent = Intent(requireActivity(), DetailCatalogActivity::class.java)
             intent.putExtra(DetailCatalogActivity.CATALOG_ID, it.id)
             startActivity(intent)
         }
 
         binding.rvCatalog.apply {
-            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
             this.adapter = adapter
         }
 

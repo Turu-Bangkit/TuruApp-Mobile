@@ -1,10 +1,9 @@
 package com.capstone.turuappmobile.ui.activity.detailHistorySleep
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepClassifyEventEntity
 import com.capstone.turuappmobile.data.db.SleepSumEntity
@@ -13,7 +12,6 @@ import com.capstone.turuappmobile.databinding.ActivityDetailHistoryBinding
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
 import com.capstone.turuappmobile.utils.convertEpochToDateTime
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry

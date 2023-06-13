@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -15,20 +14,21 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.capstone.turuappmobile.BuildConfig
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactory
+import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.ActivitySleepBinding
 import com.capstone.turuappmobile.receiver.SleepReceiver
+import com.example.awesomedialog.*
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.SleepSegmentRequest
 import com.google.android.material.snackbar.Snackbar
 import java.time.Instant
 import java.util.*
-import com.capstone.turuappmobile.BuildConfig
-import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
-import com.example.awesomedialog.*
 
 class SleepActivity : AppCompatActivity() {
 
@@ -87,31 +87,12 @@ class SleepActivity : AppCompatActivity() {
                 }
                 .onNegative(
                     "Cancel",
-                    buttonBackgroundColor = R.drawable.bg_edit_text,
+                    buttonBackgroundColor = R.drawable.bg_rounded_white,
                     textColor = ContextCompat.getColor(this, R.color.green_200)
                 ) {
                     Log.d("TAG", "negative ")
                 }
 
-
-//            MaterialAlertDialogBuilder(this)
-//                .setTitle("Start Sleep ?")
-//                .setMessage("Aplikasi Akan Keluar dan Masuk ke Mode Sleep")
-//                .setNegativeButton("Cancel") { dialog, which ->
-//                    dialog.dismiss()
-//                }
-//                .setPositiveButton("Start") { dialog, which ->
-//                    dialog.dismiss()
-//                    subscribeToSleepSegmentUpdates(applicationContext, sleepPendingIntent)
-//                    val instant = Instant.now()
-//                    val sleepTimeEntity = SleepTimeEntity(
-//                        userUID = userUID,
-//                        startTime = instant.epochSecond.toInt()
-//                    )
-//                    sleepViewModel.insertStartTimeSleep(sleepTimeEntity)
-//                    finishAffinity()
-//                }
-//                .show()
 
         } else {
             requestPermissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION)

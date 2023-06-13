@@ -1,13 +1,13 @@
 package com.capstone.turuappmobile.ui.activity.trackSleep
 
-import androidx.lifecycle.*
-import com.capstone.turuappmobile.data.repository.SleepRepository
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.capstone.turuappmobile.data.db.SleepClassifyEventEntity
 import com.capstone.turuappmobile.data.db.SleepQualityEntity
-import com.capstone.turuappmobile.data.db.SleepSumEntity
 import com.capstone.turuappmobile.data.db.SleepTimeEntity
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
+import com.capstone.turuappmobile.data.repository.SleepRepository
 import kotlinx.coroutines.launch
 
 class SleepViewModel (private val repository: SleepRepository) : ViewModel() {

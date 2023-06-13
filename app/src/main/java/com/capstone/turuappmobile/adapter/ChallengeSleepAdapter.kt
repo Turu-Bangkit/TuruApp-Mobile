@@ -7,15 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.api.model.DataItem
-import com.capstone.turuappmobile.data.db.SleepTimeEntity
 import com.capstone.turuappmobile.databinding.ItemRowChallengeBinding
-import com.capstone.turuappmobile.databinding.ItemSleeptimeRowBinding
-import com.capstone.turuappmobile.ui.animation.ShimmerAnimation
-import com.capstone.turuappmobile.utils.convertEpochToHour
-import com.capstone.turuappmobile.utils.convertEpochToJustDateTime
 import com.capstone.turuappmobile.utils.loadImage
 
 class ChallengeSleepAdapter (

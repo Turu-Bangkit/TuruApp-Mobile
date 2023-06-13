@@ -2,7 +2,6 @@ package com.capstone.turuappmobile.data.repository
 
 import com.capstone.turuappmobile.data.api.config.ApiService
 import com.capstone.turuappmobile.data.api.model.UserPreferencesModel
-import com.capstone.turuappmobile.data.datastore.SleepSubscriptionStatus
 import com.capstone.turuappmobile.data.datastore.UserDataPreferences
 import kotlinx.coroutines.flow.Flow
 

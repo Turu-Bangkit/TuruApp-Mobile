@@ -2,17 +2,19 @@ package com.capstone.turuappmobile.ui.activity.login
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.api.model.UserPreferencesModel
+import com.capstone.turuappmobile.data.repository.Result
+import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.ActivityLoginBinding
-import com.capstone.turuappmobile.ui.activity.home.HomeActivity
+import com.capstone.turuappmobile.ui.activity.onBoarding.OnBoardingActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,9 +24,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.capstone.turuappmobile.data.repository.Result
-import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
-import com.capstone.turuappmobile.ui.activity.onBoarding.OnBoardingActivity
 
 class LoginActivity : AppCompatActivity() {
 

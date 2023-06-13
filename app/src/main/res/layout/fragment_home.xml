@@ -24,7 +24,7 @@
         android:background="@drawable/bd_rectangle_blue" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/usernameHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -40,11 +40,11 @@
         android:id="@+id/cardView"
         android:layout_width="165dp"
         android:layout_height="126dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="@color/blue_100"
         app:cardCornerRadius="8dp"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintStart_toStartOf="@+id/usernameHome"
+        app:layout_constraintTop_toBottomOf="@+id/usernameHome">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -69,11 +69,11 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/circle_shape_yellow"
-                android:text="200"
+                android:shadowColor="@color/text_shadow"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
-                android:shadowColor="@color/text_shadow"
+                android:text="200"
                 android:textAlignment="center"
                 android:textColor="@color/white"
 
@@ -103,17 +103,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-
-                <include
-                    android:id="@+id/layout_loading_points"
-                    layout="@layout/item_points_shimmer"
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:visibility="gone" />
-
+            <include
+                android:id="@+id/layout_loading_points"
+                layout="@layout/item_points_shimmer"
+                android:layout_width="165dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -125,12 +123,11 @@
         android:id="@+id/cardView2"
         android:layout_width="165dp"
         android:layout_height="126dp"
-        android:layout_marginTop="60dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/blue_100"
         app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toTopOf="@+id/cardView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -235,6 +232,7 @@
                 app:layout_constraintTop_toBottomOf="@id/imageView16" />
 
             <TextView
+                android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="You can start challenge at challenge section"
@@ -242,6 +240,16 @@
                 app:layout_constraintEnd_toEndOf="@id/imageView16"
                 app:layout_constraintStart_toStartOf="@id/imageView16"
                 app:layout_constraintTop_toBottomOf="@id/noDataTxtHome" />
+
+            <include
+                android:id="@+id/layout_loading_challenge_status"
+                layout="@layout/item_points_shimmer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

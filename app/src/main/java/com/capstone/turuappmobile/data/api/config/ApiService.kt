@@ -78,6 +78,7 @@ interface ApiService {
         @Path("idCatalog") idCatalog: String,
     ) : DetailCatalogResponse
 
+    @FormUrlEncoded
     @POST("exchangePoint/{uid}")
     suspend fun exchangePoint(
         @Header("Authorization") token: String,

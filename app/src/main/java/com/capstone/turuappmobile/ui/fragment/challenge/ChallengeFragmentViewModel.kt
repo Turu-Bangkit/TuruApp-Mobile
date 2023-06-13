@@ -5,10 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.capstone.turuappmobile.data.api.model.AllChallengeResponse
-import com.capstone.turuappmobile.data.api.model.UserPointsResponse
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.repository.UsersRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ChallengeFragmentViewModel (private val repository: UsersRepository) : ViewModel() {

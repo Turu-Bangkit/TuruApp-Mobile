@@ -3,7 +3,6 @@ package com.capstone.turuappmobile.di
 import android.content.Context
 import androidx.datastore.preferences.createDataStore
 import com.capstone.turuappmobile.data.api.config.ApiConfig
-import com.capstone.turuappmobile.data.api.config.ApiService
 import com.capstone.turuappmobile.data.datastore.SLEEP_PREFERENCES_NAME
 import com.capstone.turuappmobile.data.datastore.SleepSubscriptionStatus
 import com.capstone.turuappmobile.data.datastore.USER_PREFERENCES_NAME

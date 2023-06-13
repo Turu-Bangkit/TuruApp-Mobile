@@ -3,11 +3,9 @@ package com.capstone.turuappmobile.ui.widget
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import com.capstone.turuappmobile.R
 
 class EditText : AppCompatEditText {

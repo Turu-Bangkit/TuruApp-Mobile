@@ -3,7 +3,6 @@ package com.capstone.turuappmobile.utils
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.capstone.turuappmobile.ui.animation.ShimmerAnimation
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

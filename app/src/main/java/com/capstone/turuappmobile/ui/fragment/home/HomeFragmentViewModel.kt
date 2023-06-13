@@ -8,8 +8,8 @@ import com.capstone.turuappmobile.data.api.model.AllCatalogRespone
 import com.capstone.turuappmobile.data.api.model.BasicResponse
 import com.capstone.turuappmobile.data.api.model.StatusChallengeResponse
 import com.capstone.turuappmobile.data.api.model.UserPointsResponse
-import com.capstone.turuappmobile.data.repository.UsersRepository
 import com.capstone.turuappmobile.data.repository.Result
+import com.capstone.turuappmobile.data.repository.UsersRepository
 import kotlinx.coroutines.launch
 
 class HomeFragmentViewModel (private val repository: UsersRepository) : ViewModel() {

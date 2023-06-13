@@ -1,20 +1,24 @@
 package com.capstone.turuappmobile.ui.activity.detailChallenge
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.api.model.Data
-import com.capstone.turuappmobile.data.api.model.DetailChallengeResponse
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.ActivityDetailChallengeBinding
-import com.capstone.turuappmobile.ui.fragment.home.HomeFragmentViewModel
+import com.capstone.turuappmobile.ui.activity.login.LoginActivity
 import com.capstone.turuappmobile.utils.loadImage
+import com.example.awesomedialog.*
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class DetailChallengeActivity : AppCompatActivity() {
 
@@ -37,7 +41,32 @@ class DetailChallengeActivity : AppCompatActivity() {
 
 
             binding.btnStartChallenge.setOnClickListener {
-                detailChallengeFragmentViewModel.startChallenge(user.jwtToken, user.UID, idChallenge)
+
+
+                AwesomeDialog.build(this)
+                    .title("Register Challenge")
+                    .body(
+                        "Are you sure want to register this challenge?",
+                    )
+                    .background(R.drawable.bg_rounded_blue200)
+                    .position(AwesomeDialog.POSITIONS.CENTER)
+                    .onPositive(
+                        "Yes",
+                        buttonBackgroundColor = R.drawable.bg_rounded_blue500,
+                        textColor = ContextCompat.getColor(this, R.color.white)
+                    ) {
+                        detailChallengeFragmentViewModel.startChallenge(user.jwtToken, user.UID, idChallenge)
+                    }
+                    .onNegative(
+                        "Cancel",
+                        buttonBackgroundColor = R.drawable.bg_rounded_white,
+                        textColor = ContextCompat.getColor(this, R.color.green_200)
+                    ) {
+
+                    }
+
+
+
             }
         }
 

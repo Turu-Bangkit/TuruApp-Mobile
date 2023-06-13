@@ -1,15 +1,18 @@
 package com.capstone.turuappmobile.ui.activity.detailCatalog
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.capstone.turuappmobile.R
 import com.capstone.turuappmobile.data.api.model.DataDetailCatalog
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.ActivityDetailCatalogBinding
 import com.capstone.turuappmobile.utils.loadImage
+import com.example.awesomedialog.*
 
 class DetailCatalogActivity : AppCompatActivity() {
 
@@ -33,7 +36,30 @@ class DetailCatalogActivity : AppCompatActivity() {
 
 
             binding.btnCatalog.setOnClickListener {
-                detailCatalogViewModel.exchangePoint(user.jwtToken, user.UID, idCatalog)
+
+                AwesomeDialog.build(this)
+                    .title("Exchange Catalog")
+                    .body(
+                        "Are you sure want to exchange this product?",
+                    )
+                    .background(R.drawable.bg_rounded_blue200)
+                    .position(AwesomeDialog.POSITIONS.CENTER)
+                    .onPositive(
+                        "Yes",
+                        buttonBackgroundColor = R.drawable.bg_rounded_blue500,
+                        textColor = ContextCompat.getColor(this, R.color.white)
+                    ) {
+                        detailCatalogViewModel.exchangePoint(user.jwtToken, user.UID, idCatalog)
+                    }
+                    .onNegative(
+                        "Cancel",
+                        buttonBackgroundColor = R.drawable.bg_rounded_white,
+                        textColor = ContextCompat.getColor(this, R.color.green_200)
+                    ) {
+
+                    }
+
+
             }
         }
 
@@ -48,6 +74,27 @@ class DetailCatalogActivity : AppCompatActivity() {
                 }
                 is Result.Error -> {
                     showLoading(false)
+                    toastMaker(it.error)
+                }
+            }
+        }
+
+        detailCatalogViewModel.exchangePointResult.observe(this){
+            when(it){
+                is Result.Loading -> {
+                    showLoadingNotShimmer(true)
+                }
+                is Result.Success -> {
+                    showLoadingNotShimmer(false)
+                    if(it.data.message == "Point is not enough"){
+                        alertDialog(it.data.message, R.drawable.bg_rounded_red, R.drawable.warning_icon)
+                    }else{
+                        alertDialog(it.data.message, R.drawable.bg_rounded_blue500, R.drawable.success_icon)
+                    }
+                    toastMaker(it.data.message)
+                }
+                is Result.Error -> {
+                    showLoadingNotShimmer(false)
                     toastMaker(it.error)
                 }
             }
@@ -76,8 +123,30 @@ class DetailCatalogActivity : AppCompatActivity() {
                 View.GONE
             }
     }
+
+    private fun showLoadingNotShimmer(isLoading: Boolean) {
+        binding.layoutLoading.layoutAllLoading.visibility =
+            if (isLoading) View.VISIBLE else View.GONE
+    }
     private fun toastMaker(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun alertDialog(message: String,background: Int, icon : Int){
+        AwesomeDialog.build(this)
+            .title(message,
+                titleColor = ContextCompat.getColor(this, R.color.white),
+            )
+            .icon(icon)
+            .background(R.drawable.bg_rounded_blue200)
+            .position(AwesomeDialog.POSITIONS.CENTER)
+            .onPositive(
+                "Ok",
+                buttonBackgroundColor = background,
+                textColor = ContextCompat.getColor(this, R.color.white)
+            ) {
+
+            }
     }
 
 
