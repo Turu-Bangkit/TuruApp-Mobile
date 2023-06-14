@@ -14,7 +14,7 @@
     <string name="permission_rational">Sample requires Activity Recognition permissions to function.</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="permission_approved">Permission Disetujui!, tekan tombol untuk mengaktifkan mode tidur</string>
+    <string name="permission_approved">Permission Approved!, press button to activate sleep mode</string>
 
     <string name="start_time">Start Time : %1$s</string>
     <string name="end_time">Start Time : %1$s</string>
@@ -50,13 +50,9 @@
 
     <string name="lorem">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
     <string name="lorem2">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book
-
+        1. The selected challenge cannot be canceled once chosen.\n2. Users must sleep according to the designated time, failure to do so will result in automatic challenge failure.
     </string>
+
     <string name="title_activity_on_boarding">OnBoardingActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -66,5 +62,8 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="turu_description">Turu, a platform that helps users track their sleep schedule and journal their dreams. Turu incorporates a unique "sleep to earn" business model that rewards users for following their sleep schedule and achieving their sleep goals.
+</string>
 
 </resources>

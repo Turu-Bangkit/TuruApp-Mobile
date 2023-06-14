@@ -28,6 +28,18 @@ class HomeFragmentViewModel (private val repository: UsersRepository) : ViewMode
     private val _catalogResult = MutableLiveData<Result<AllCatalogRespone>>()
     val catalogResult: MutableLiveData<Result<AllCatalogRespone>> = _catalogResult
 
+    private val alreadyCall = MutableLiveData<Boolean>()
+
+    fun getAlreadyCall() : Boolean{
+        return alreadyCall.value ?: false
+    }
+
+    fun alreadyCall(){
+        alreadyCall.value = true
+    }
+
+
+
     fun allcatalog(token: String) = viewModelScope.launch {
         callAllcatalog(token)
     }

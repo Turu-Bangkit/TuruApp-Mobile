@@ -83,7 +83,7 @@ class SleepActivity : AppCompatActivity() {
                         startTime = instant.epochSecond.toInt()
                     )
                     sleepViewModel.insertStartTimeSleep(sleepTimeEntity)
-                    finishAffinity()
+
                 }
                 .onNegative(
                     "Cancel",
@@ -113,6 +113,7 @@ class SleepActivity : AppCompatActivity() {
             sleepViewModel.updateSubscribedToSleepData(true)
             sleepViewModel.updateTotalOnReceiveSleep(0)
             Log.d(TAG, "Successfully subscribed to sleep data.")
+            finishAffinity()
         }
         task.addOnFailureListener { exception ->
             Log.d(TAG, "Exception when subscribing to sleep data: $exception")

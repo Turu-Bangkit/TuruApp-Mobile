@@ -1,8 +1,6 @@
 package com.capstone.turuappmobile.ui.activity.detailChallenge
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,12 +11,9 @@ import com.capstone.turuappmobile.data.api.model.Data
 import com.capstone.turuappmobile.data.repository.Result
 import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.ActivityDetailChallengeBinding
-import com.capstone.turuappmobile.ui.activity.login.LoginActivity
 import com.capstone.turuappmobile.utils.loadImage
 import com.example.awesomedialog.*
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class DetailChallengeActivity : AppCompatActivity() {
 

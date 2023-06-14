@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
-import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -126,11 +125,6 @@ class SleepReceiver : BroadcastReceiver() {
         private const val ID = 100
         fun createSleepReceiverPendingIntent(context: Context): PendingIntent {
             val sleepIntent = Intent(context, SleepReceiver::class.java)
-            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                PendingIntent.FLAG_IMMUTABLE
-            } else {
-                PendingIntent.FLAG_CANCEL_CURRENT
-            }
             return PendingIntent.getBroadcast(
                 context,
                 0,

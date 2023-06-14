@@ -24,13 +24,13 @@ import com.capstone.turuappmobile.data.viewModelFactory.ViewModelFactoryUser
 import com.capstone.turuappmobile.databinding.FragmentHomeBinding
 import com.capstone.turuappmobile.receiver.SleepReceiver
 import com.capstone.turuappmobile.ui.activity.catalog.CatalogActivity
+import com.capstone.turuappmobile.ui.activity.detailAnalysist.DetailAnalysistActivity
 import com.capstone.turuappmobile.ui.activity.detailCatalog.DetailCatalogActivity
 import com.capstone.turuappmobile.ui.activity.detailChallengeOnProgress.DetailChallengeOnProgressActivity
 import com.capstone.turuappmobile.ui.activity.trackSleep.SleepViewModel
 import com.capstone.turuappmobile.utils.onedayinseconds
 import com.example.awesomedialog.*
 import com.google.android.gms.location.ActivityRecognition
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -86,12 +86,6 @@ class HomeFragment : Fragment() {
                 val instant = Instant.now()
                 sleepViewModel.updateEndTimeSleep(instant.epochSecond.toInt())
 
-                MaterialAlertDialogBuilder(requireActivity())
-                    .setTitle("Mode Sleep Off")
-                    .setPositiveButton("Ok") { dialog, which ->
-                        dialog.dismiss()
-                    }
-                    .show()
             }
         }
 
@@ -151,6 +145,7 @@ class HomeFragment : Fragment() {
                 is Result.Success -> {
                     showLoading(false)
                     if (it.data.data != null) startCheckChallenge(it.data.data)
+                    else updateUIChallenge(0,0)
                 }
                 is Result.Error -> {
                     showLoading(false)
@@ -181,68 +176,83 @@ class HomeFragment : Fragment() {
 
                 }
                 is Result.Success -> {
-                    if (it.data.message == "Challenge Failed !") {
-                        AwesomeDialog.build(requireActivity())
-                            .title(
-                                it.data.message,
-                                titleColor = ContextCompat.getColor(
-                                    requireActivity(),
-                                    R.color.white
-                                ),
-                            )
-                            .background(R.drawable.bg_rounded_blue200)
-                            .position(AwesomeDialog.POSITIONS.CENTER)
-                            .onPositive(
-                                "Ok",
-                                buttonBackgroundColor = R.drawable.bg_rounded_red,
-                                textColor = ContextCompat.getColor(requireActivity(), R.color.white)
-                            ) {
 
-                            }
-                    } else if (it.data.message == "Success Finished Challenge !") {
-                        AwesomeDialog.build(requireActivity())
-                            .title(
-                                it.data.message,
-                                titleColor = ContextCompat.getColor(
-                                    requireActivity(),
-                                    R.color.white
-                                ),
-                            )
-                            .body(
-                                "You got the points !",
-                                color = ContextCompat.getColor(requireActivity(), R.color.white)
-                            )
-                            .background(R.drawable.bg_rounded_blue200)
-                            .position(AwesomeDialog.POSITIONS.CENTER)
-                            .onPositive(
-                                "Ok",
-                                buttonBackgroundColor = R.drawable.bg_rounded_blue500,
-                                textColor = ContextCompat.getColor(requireActivity(), R.color.white)
-                            ) {
+                    if (!homeFragmentViewModel.getAlreadyCall()) {
 
-                            }
-                    } else {
-                        AwesomeDialog.build(requireActivity())
-                            .title(
-                                it.data.message,
-                                titleColor = ContextCompat.getColor(
-                                    requireActivity(),
-                                    R.color.white
-                                ),
-                            )
-                            .body(
-                                "Success Update Level !",
-                                color = ContextCompat.getColor(requireActivity(), R.color.white)
-                            )
-                            .background(R.drawable.bg_rounded_blue200)
-                            .position(AwesomeDialog.POSITIONS.CENTER)
-                            .onPositive(
-                                "Ok",
-                                buttonBackgroundColor = R.drawable.bg_rounded_blue500,
-                                textColor = ContextCompat.getColor(requireActivity(), R.color.white)
-                            ) {
 
-                            }
+                        if (it.data.message == "Challenge Failed !") {
+                            AwesomeDialog.build(requireActivity())
+                                .title(
+                                    it.data.message,
+                                    titleColor = ContextCompat.getColor(
+                                        requireActivity(),
+                                        R.color.white
+                                    ),
+                                )
+                                .background(R.drawable.bg_rounded_blue200)
+                                .position(AwesomeDialog.POSITIONS.CENTER)
+                                .onPositive(
+                                    "Ok",
+                                    buttonBackgroundColor = R.drawable.bg_rounded_red,
+                                    textColor = ContextCompat.getColor(
+                                        requireActivity(),
+                                        R.color.white
+                                    )
+                                ) {
+
+                                }
+                        } else if (it.data.message == "Success Finished Challenge !") {
+                            AwesomeDialog.build(requireActivity())
+                                .title(
+                                    it.data.message,
+                                    titleColor = ContextCompat.getColor(
+                                        requireActivity(),
+                                        R.color.white
+                                    ),
+                                )
+                                .body(
+                                    "You got the points !",
+                                    color = ContextCompat.getColor(requireActivity(), R.color.white)
+                                )
+                                .background(R.drawable.bg_rounded_blue200)
+                                .position(AwesomeDialog.POSITIONS.CENTER)
+                                .onPositive(
+                                    "Ok",
+                                    buttonBackgroundColor = R.drawable.bg_rounded_blue500,
+                                    textColor = ContextCompat.getColor(
+                                        requireActivity(),
+                                        R.color.white
+                                    )
+                                ) {
+
+                                }
+                        } else {
+                            AwesomeDialog.build(requireActivity())
+                                .title(
+                                    it.data.message,
+                                    titleColor = ContextCompat.getColor(
+                                        requireActivity(),
+                                        R.color.white
+                                    ),
+                                )
+                                .body(
+                                    "Success Update Level !",
+                                    color = ContextCompat.getColor(requireActivity(), R.color.white)
+                                )
+                                .background(R.drawable.bg_rounded_blue200)
+                                .position(AwesomeDialog.POSITIONS.CENTER)
+                                .onPositive(
+                                    "Ok",
+                                    buttonBackgroundColor = R.drawable.bg_rounded_blue500,
+                                    textColor = ContextCompat.getColor(
+                                        requireActivity(),
+                                        R.color.white
+                                    )
+                                ) {
+
+                                }
+                        }
+                        homeFragmentViewModel.alreadyCall()
                     }
                 }
                 is Result.Error -> {
@@ -251,13 +261,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-
-        binding.btnToChallengeOnProgress.setOnClickListener {
-            startActivity(Intent(requireActivity(), DetailChallengeOnProgressActivity::class.java))
-        }
-
-        binding.btnToCatalog.setOnClickListener {
-            startActivity(Intent(requireActivity(), CatalogActivity::class.java))
+        binding.apply {
+            btnToChallengeOnProgress.setOnClickListener {
+                startActivity(Intent(requireActivity(), DetailChallengeOnProgressActivity::class.java))
+            }
+            btnToCatalog.setOnClickListener {
+                startActivity(Intent(requireActivity(), CatalogActivity::class.java))
+            }
+            btnSeeHistorySleepHome.setOnClickListener {
+                startActivity(Intent(requireActivity(), DetailAnalysistActivity::class.java))
+            }
         }
 
     }
@@ -360,6 +373,13 @@ class HomeFragment : Fragment() {
 
         task.addOnSuccessListener {
             sleepViewModel.updateSubscribedToSleepData(false)
+            Toast.makeText(
+                context,
+                "Sleep Mode Off",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            requireActivity().finish()
             Log.d(TAG, "Successfully unsubscribed to sleep data.")
         }
         task.addOnFailureListener { exception ->

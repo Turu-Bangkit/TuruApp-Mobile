@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.AssetFileDescriptor
 import android.content.res.AssetManager
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.turuappmobile.data.db.SleepQualityEntity
@@ -26,7 +25,6 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
 class OnBoardingActivity : AppCompatActivity() {
-
 
 
     private lateinit var binding: ActivityOnBoardingBinding
@@ -123,7 +121,6 @@ class OnBoardingActivity : AppCompatActivity() {
                         result =
                             targetNormalizationInverse(performInference(interpreter, features))
 
-                        Toast.makeText(this, "Quality: $result", Toast.LENGTH_SHORT).show()
 
                     }
                     sleepViewModel.allSleepQuality(User.UID)
@@ -169,13 +166,13 @@ class OnBoardingActivity : AppCompatActivity() {
 
     }
 
-    private fun updateUi(){
+    private fun updateUi() {
         startActivity(Intent(this, HomeActivity::class.java))
         finish()
     }
 
     private fun loadModel(assetManager: AssetManager): Interpreter {
-        val modelFilename = "model.tflite"
+        val modelFilename = "model_augmented.tflite"
         val modelFileDescriptor: AssetFileDescriptor = assetManager.openFd(modelFilename)
         val inputStream = FileInputStream(modelFileDescriptor.fileDescriptor)
         val fileChannel: FileChannel = inputStream.channel
@@ -212,7 +209,7 @@ class OnBoardingActivity : AppCompatActivity() {
         timeAsleep: Float,
         timeBeforeSleep: Float
     ): FloatArray {
-        val startNorm = (start - 21780) / (94380 - 21780)
+        val startNorm = (start - 60) / (86340 - 60)
         val endNorm = (end - 3900) / (84540 - 3900)
         val regularityNorm = (regularity + 1) / (100 + 1)
         val timeAsleepNorm = (timeAsleep / 45769.4)
