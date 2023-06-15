@@ -1,11 +1,11 @@
-## Documentation TuruApp Mobile (Android)
+## TuruApp Mobile (Android) Documentation
 <p>This is repository of project capstone Bangkit C23 - PR493 for mobile develop using kotlin and android studio. </p>
 
 
 - ### Feature
-- **Login**, Allows users to login using google account.
-- **Sleep quality**, The machine learning model will predict the sleep quality of users based on their sleep habits.
-- **Exchange point**, Users will earn points for successfully completing the sleep challenge.
+    - **Login**, Allows users to login using google account.
+    - **Sleep quality**, The machine learning model will predict the sleep quality of users based on their sleep habits.
+    - **Exchange point**, Users will earn points for successfully completing the sleep challenge.
 
 - ### Library
     - [Firebase](https://firebase.google.com)
