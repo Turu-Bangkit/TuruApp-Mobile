@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -62,9 +61,13 @@ class SleepActivity : AppCompatActivity() {
         if (activityRecognitionPermissionApproved()) {
             binding.outputTextView.text = getString(R.string.permission_approved)
         }
+
+        binding.btnStartSleep.setOnClickListener {
+            onClickRequestSleepData()
+        }
     }
 
-    fun onClickRequestSleepData(view: View) {
+    private fun onClickRequestSleepData() {
         if (activityRecognitionPermissionApproved()) {
 
             AwesomeDialog.build(this)
@@ -102,10 +105,10 @@ class SleepActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     private fun subscribeToSleepSegmentUpdates(context: Context, pendingIntent: PendingIntent) {
         Log.d(TAG, "requestSleepSegmentUpdates()")
-        // TODO: Request Sleep API updates
+
         val task = ActivityRecognition.getClient(context).requestSleepSegmentUpdates(
             pendingIntent,
-            // Registers for both [SleepSegmentEvent] and [SleepClassifyEvent] data.
+
             SleepSegmentRequest.getDefaultSleepSegmentRequest()
         )
 
@@ -122,9 +125,6 @@ class SleepActivity : AppCompatActivity() {
 
 
     private fun activityRecognitionPermissionApproved(): Boolean {
-        // Because this app targets 29 and above (recommendation for using the Sleep APIs), we
-        // don't need to check if this is on a device before runtime permissions, that is, a device
-        // prior to 29 / Q.
         return PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.ACTIVITY_RECOGNITION
@@ -134,10 +134,10 @@ class SleepActivity : AppCompatActivity() {
     private val requestPermissionLauncher: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
-                // Permission denied on Android platform that supports runtime permissions.
+
                 displayPermissionSettingsSnackBar()
             } else {
-                // Permission was granted (either by approval or Android version below Q).
+
                 binding.outputTextView.text = getString(R.string.permission_approved)
             }
         }
@@ -149,7 +149,7 @@ class SleepActivity : AppCompatActivity() {
             Snackbar.LENGTH_LONG
         )
             .setAction(R.string.action_settings) {
-                // Build intent that displays the App settings screen.
+
                 val intent = Intent()
                 intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                 val uri = Uri.fromParts(
@@ -166,6 +166,6 @@ class SleepActivity : AppCompatActivity() {
 
 
     companion object {
-        private const val TAG = "MainActivity"
+        private const val TAG = "SleepActivity"
     }
 }

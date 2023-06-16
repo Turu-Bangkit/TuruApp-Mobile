@@ -93,14 +93,13 @@ class LoginActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
-                // Google Sign In was successful, authenticate with Firebase
+
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.idToken)
+
                 id = account.id!!
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
+
                 Log.w(TAG, "Google sign in failed", e)
             }
         }
@@ -111,12 +110,12 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
+
                     Log.d(TAG, "signInWithCredential:success")
                     firebaseUser = auth.currentUser
                     loginViewModel.checkToken(idToken)
                 } else {
-                    // If sign in fails, display a message to the user.
+
 
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     updateUI(null)

@@ -23,9 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.onBoarding.OnBoardingActivity"
-            android:exported="false"
-            android:label="@string/title_activity_on_boarding"
-            android:theme="@style/Theme.TuruAppMobile.NoActionBar" />
+            android:exported="false" />
         <activity
             android:name=".ui.activity.catalog.CatalogActivity"
             android:exported="false" />
